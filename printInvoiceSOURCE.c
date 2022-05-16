@@ -9,6 +9,7 @@
 //- Utility Libraries
 #include <math.h>
 #include <string.h>
+
 //- LIST STRUCT SECTION
 //- Detail Struct Define
 typedef struct InvoiceInformation{
@@ -17,11 +18,12 @@ typedef struct InvoiceInformation{
 	double total;
 } InvoiceInformation;
 
-
 //- Detail Struct Define
 typedef struct InvoiceDetail{
 	char itemName[100];
 	short itemAmount;
+	int dishID;
+	double unitPrice;
 	double subTotal;
 } InvoiceDetail;
 
@@ -54,18 +56,21 @@ void addItem(InvoiceDetail detail){
 //- Show lista data
 void showListData(){
 	
+	printf("\nPlatillo\tCantidad\tPrecio Unitario\t\tSub total");
+	printf("\n-------------------------------------------------------------------------------------\n");
+	
 	InvoiceItems *itemData = first;
 	
 	while(itemData != NULL){
-		printf("\nItem name = %s",itemData->detail.itemName);
-		printf("\nItem Amount = %d",itemData->detail.itemAmount);
-		printf("\nSubtotal = %f\n",itemData->detail.subTotal);
+		printf("%d",itemData->detail.dishID);
+		printf("\t\t%d",itemData->detail.itemAmount);
+		printf("\t\t%f",itemData->detail.unitPrice);
+		printf("\t\t%f",itemData->detail.subTotal);
+		printf("\n");
 		
 		itemData = itemData->next;
 	}
 }
-
-
 
 //- UTILITY FUNCTIONS SECTION
 //- Console & Forecolor Change Function
@@ -87,14 +92,16 @@ void workerFunction(){
 	//- Test of add detail function
 	//- 1 item
 	InvoiceDetail detail;
-	detail.itemAmount = 1;
-	strcpy(detail.itemName,"hola");
-	detail.subTotal = 120.00;
+	detail.itemAmount 	= 1;
+	detail.dishID 		= 1;
+	detail.unitPrice	= 7.80;
+	detail.subTotal 	= (detail.itemAmount*detail.unitPrice);
 	addItem(detail);
 	//- 2 item
-	detail.itemAmount = 2;
-	strcpy(detail.itemName,"hola2");
-	detail.subTotal = 122.00;
+	detail.itemAmount 	= 2;
+	detail.dishID 		= 6;
+	detail.unitPrice	= 5.65;
+	detail.subTotal 	= (detail.itemAmount*detail.unitPrice);
 	addItem(detail);
 	
 	//- Print InvoiceDetails
