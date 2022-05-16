@@ -55,21 +55,35 @@ void addItem(InvoiceDetail detail){
 
 //- Show lista data
 void showListData(){
+	//- Local Variables
+	double accumulator = 0.0;//- total of invoice acum
 	
+	//- Table Head
+	printf("\nFecha de factura: 2022-05-16(DEMO DATE)\n");
 	printf("\nPlatillo\tCantidad\tPrecio Unitario\t\tSub total");
 	printf("\n-------------------------------------------------------------------------------------\n");
 	
 	InvoiceItems *itemData = first;
 	
+	//- Table Body (Invoice Details)
 	while(itemData != NULL){
 		printf("%d",itemData->detail.dishID);
 		printf("\t\t%d",itemData->detail.itemAmount);
-		printf("\t\t%f",itemData->detail.unitPrice);
-		printf("\t\t%f",itemData->detail.subTotal);
+		printf("\t\t$%f",itemData->detail.unitPrice);
+		printf("\t\t$%f",itemData->detail.subTotal);
 		printf("\n");
 		
+		//- Acum of total value
+		accumulator += itemData->detail.subTotal;
+		
+		//- Next Item
 		itemData = itemData->next;
 	}
+	
+	//- Table Footer
+	printf("-------------------------------------------------------------------------------------\n");
+	printf("\nTotal a pagar: ------------------------------------------------------------$%f\n\n",accumulator);
+	
 }
 
 //- UTILITY FUNCTIONS SECTION
@@ -87,8 +101,6 @@ void basicConfigurations(char colorSetting[]){
 
 //- WORKER FUNCTION SECTION
 void workerFunction(){
-	printf("Welcome\n");
-	
 	//- Test of add detail function
 	//- 1 item
 	InvoiceDetail detail;
