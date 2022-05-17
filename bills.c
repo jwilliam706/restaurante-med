@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "models/bill.h"
 #include "dishes.c"
+#include "customers.c"
 
 void readBillDetails() {
   int option = 1;
@@ -34,9 +35,10 @@ void readBillDetails() {
 void createNewBill()
 {
     bill newBill;
+    customer *newCustomer;
     newBill.number = 1;
-    printf("Ingrese el cliente de la factura: ");
-    scanf("%d", &newBill.customer_id);
+    newCustomer = getCustomer();
+    printCustomer(newCustomer);
     readBillDetails();
     printf("Orden registrada con exito!\n");
     waitUser();
