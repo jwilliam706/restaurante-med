@@ -1,15 +1,10 @@
+#ifndef DISHES_H
+#define DISHES_H
 #include <stdio.h>
 #include <stdlib.h>
 #include "utils.h"
-
-typedef struct
-{
-    int id;
-    char name[20];
-    float price;
-} dish;
-
-dish dishes[7];
+#include "models/dish.h"
+#include "data/dish.c"
 
 dish readDish(int id)
 {
@@ -30,3 +25,12 @@ void readDishes()
         dishes[i] = readDish(i);
     }
 }
+
+void printDishes()
+{
+    for(int i = 0; i < 7; i++)
+    {
+        printf("%d - %s - $%.2f\n", dishes[i].id + 1, dishes[i].name, dishes[i].price);
+    }
+}
+#endif

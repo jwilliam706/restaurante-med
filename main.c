@@ -4,9 +4,9 @@
 #include <string.h>
 #include <ctype.h>
 #include <locale.h>
-#include <windows.h>
-#include "dishes.c"
 #include "stats.c"
+#include "bills.c"
+#include "dishes.c"
 
 int mainMenu()
 {
@@ -27,25 +27,31 @@ int mainMenu()
 }
 
 int main(){
-    int menuOption = mainMenu();
-    switch (menuOption)
-    {
-    case 1:
-      // Leer precios de los platillos
-      readDishes();
-      break;
-    case 2:
-      // Generar nueva factura
-      break;
-    case 3:
-      // Estadisticas
-      stats();
-    case 4:
-      // Salir
-      break;
-    
-    default:
-      printf("Opcion no valida\n");
-      break;
+    initDishValues();
+    int menuOption;
+    while (menuOption != 4) {
+      menuOption = mainMenu();
+      switch (menuOption)
+      {
+      case 1:
+        // Leer precios de los platillos
+        readDishes();
+        break;
+      case 2:
+        // Generar nueva factura
+        createNewBill();
+        break;
+      case 3:
+        // Estadisticas
+        stats();
+        break;
+      case 4:
+        // Salir
+        break;
+      
+      default:
+        printf("Opcion no valida\n");
+        break;
+      }
     }
 }

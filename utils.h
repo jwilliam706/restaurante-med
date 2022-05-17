@@ -1,3 +1,6 @@
+#ifndef UTILS_H
+#define UTILS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,3 +26,11 @@ void readString(char *line, int size)
   clearBuffer(line);
   remove_newline(line);
 }
+
+void waitUser()
+{
+  printf("Presione enter para continuar...");
+  getchar();
+}
+
+#endif
