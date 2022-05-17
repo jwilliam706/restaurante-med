@@ -39,7 +39,7 @@ int main(){
         break;
       case 2:
         // Generar nueva factura
-        readBill();
+        createNewBill();
         break;
       case 3:
         // Estadisticas

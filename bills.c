@@ -31,7 +31,7 @@ void readBillDetails() {
   }
 }
 
-void readBill()
+void createNewBill()
 {
     bill newBill;
     newBill.number = 1;
