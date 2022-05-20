@@ -72,3 +72,56 @@ customer *getCustomer(){
 		break;
 	}
 }
+
+customer *searchCustomer(int aux){
+	customer *i = first;
+	int code= 0;
+	char name[100];
+	int customerFind=0;
+	system("cls");
+	if(first != NULL){
+		//Search trough code
+		if(aux == 1){
+			printf("Digite codigo de cliente a buscar: ");
+		scanf("%d",&code);
+		while(i!=NULL){
+			if(i->code==code){
+				printf("\nCodigo %d",i->code);
+				printf("\nNombre %s",i->name);
+				printf("\nDireccion %s",i->address);
+				printf("\nEmail %s",i->email);
+				printf("\nTelefono %s",i->phone);
+				customerFind=1;
+				break;
+			}
+		i=i->next;
+		}
+		if(customerFind==0)
+		printf("\n Codigo no encontrado");
+		}
+		else if(aux == 2){
+			//Search trough name
+			printf("Digite nombre a cliente a buscar: ");
+			scanf("%s",&name);
+		while(i!=NULL){
+			if(i->name==name){
+				printf("\nCodigo %d",i->code);
+				printf("\nNombre %s",i->name);
+				printf("\nDireccion %s",i->address);
+				printf("\nEmail %s",i->email);
+				printf("\nTelefono %s",i->phone);
+				customerFind=1;
+				break;
+			}
+		i=i->next;
+		}
+		if(customerFind==0)
+		printf("\n Nombre no encontrado");
+		}
+		
+	}else{
+		printf("La lista esta vacia");
+	}
+	system("pause");
+}
+
