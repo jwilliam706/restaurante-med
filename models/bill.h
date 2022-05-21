@@ -8,7 +8,6 @@ typedef struct
     float price;
 } bill_detail;
 
-
 typedef struct
 {
     int number;
@@ -19,7 +18,8 @@ typedef struct
     float total;
 } bill;
 
-void printDetail(bill_detail detail) {
+void printDetail(bill_detail detail)
+{
     float total = detail.price * detail.quantity;
     printf("%s - %d x %.2f = %.2f \n", detail.name, detail.quantity, detail.price, total);
 }

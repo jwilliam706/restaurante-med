@@ -1,45 +1,50 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "utils.h"
-#include "models/bill.h"
 #include "dishes.c"
 #include "customers.c"
+#include "models/bill.h"
+#include "lib/utils.h"
+#include "lib/bill_node.h"
 
-void readBillDetails() {
+bill_detail_list *readBillDetails()
+{
+  bill_detail_list *details = create_bill_detail_list();
   int option = 1;
-  int currentItem = 0;
-  // 1 -> read detail
-  // 2 -> salir
-  // int size = 2;
-  bill_detail items[1];
   while (option != 2)
   {
-      int selectedDish;
-      printDishes();
-      printf("Seleccione el platillo: ");
-      scanf("%d", &selectedDish);
-      items[currentItem].price = dishes[selectedDish - 1].price;
-      strcpy(items[currentItem].name, dishes[selectedDish - 1].name);
-      printf("Ingrese la cantidad: ");
-      scanf("%d", &items[currentItem].quantity);
-      printDetail(items[currentItem]);
+    bill_detail *detail = malloc(sizeof(bill_detail));
+    int selectedDish;
+    printf("\n\n--------------------Nueva Factura--------------------\n");
 
-      printf("Desea agregar otro platillo?\n");
-      printf("[1] Si\n");
-      printf("[2] No\n");
-      scanf("%d", &option);
-      getchar();
+    printDishes();
+    printf("\n\nSeleccione el platillo: ");
+    scanf("%d", &selectedDish);
+    detail->price = dishes[selectedDish - 1].price;
+    strcpy(&detail->name, dishes[selectedDish - 1].name);
+    printf("Ingrese la cantidad: ");
+    scanf("%d", &detail->quantity);
+    printDetail(*detail);
+    add_bill_detail(details, *detail);
+    printf("Desea agregar otro platillo?\n");
+    printf("[1] Si\n");
+    printf("[2] No\n");
+    scanf("%d", &option);
+    getchar();
   }
+
+  return details;
 }
 
 void createNewBill()
 {
-    bill newBill;
-    customer *newCustomer;
-    newBill.number = 1;
-    newCustomer = getCustomer();
-    printCustomer(newCustomer);
-    readBillDetails();
-    printf("Orden registrada con exito!\n");
-    waitUser();
+  bill newBill;
+  customer *newCustomer;
+  newBill.number = 1;
+  newCustomer = getCustomer();
+  bill_detail_list *list = readBillDetails();
+  printf("--------------------Factura--------------------\n");
+  printCustomer(newCustomer);
+  print_bill_details(list);
+  printf("Orden registrada con exito!\n");
+  waitUser();
 }
