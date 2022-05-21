@@ -1,5 +1,5 @@
-#ifndef BILL_NODE_H
-#define BILL_NODE_H
+#ifndef BILL_LIST_H
+#define BILL_LIST_H
 
 #include "../models/bill.h"
 

@@ -1,18 +1,22 @@
 #ifndef BILL_H
 #define BILL_H
 
+#include "../lib/bill_list.h"
+
 typedef struct
 {
     char name[20];
     int quantity;
     float price;
+    float subTotal;
 } bill_detail;
 
 typedef struct
 {
     int number;
     int customer_id;
-    bill_detail items[10];
+    bill_detail_list *details;
+    time_t date;
     float subtotal;
     float iva;
     float total;

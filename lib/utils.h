@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
+#include <windows.h>
 
 void clearBuffer(char *line)
 {
@@ -33,6 +35,27 @@ void waitUser()
 {
   printf("Presione enter para continuar...");
   getchar();
+}
+
+void basicConfigurations(char colorSetting[])
+{
+  setlocale(LC_ALL, "spanish");
+  SetConsoleCP(1252);
+  SetConsoleOutputCP(1252);
+  system(colorSetting);
+}
+
+time_t getCurrentTime()
+{
+  time_t rawTime;
+  return time(&rawTime);
+}
+
+char *getLocaleCurrentTime(time_t *rawTime)
+{
+  struct tm *timeinfo;
+  timeinfo = localtime(&rawTime);
+  return asctime(timeinfo);
 }
 
 #endif
