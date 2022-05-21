@@ -1,30 +1,54 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "dishes.c"
 #include "customers.c"
+
 #include "models/bill.h"
 #include "lib/utils.h"
 #include "lib/bill_node.h"
+
+time_t getCurrentTime()
+{
+  time_t rawtime;
+  struct tm *timeinfo;
+
+  time(&rawtime);
+  timeinfo = localtime(&rawtime);
+  printf("Current local time and date: %s", asctime(timeinfo));
+  return rawtime;
+}
+
+dish getDish()
+{
+  int selectedDish;
+  printDishes();
+  printf("\nSeleccione el platillo: ");
+  scanf("%d", &selectedDish);
+  return dishes[selectedDish - 1];
+}
 
 bill_detail_list *readBillDetails()
 {
   bill_detail_list *details = create_bill_detail_list();
   int option = 1;
+  printf("\n\n--------------------Nueva Factura--------------------\n");
+  getCurrentTime();
   while (option != 2)
   {
     bill_detail *detail = malloc(sizeof(bill_detail));
-    int selectedDish;
-    printf("\n\n--------------------Nueva Factura--------------------\n");
+    dish dish = getDish();
 
-    printDishes();
-    printf("\n\nSeleccione el platillo: ");
-    scanf("%d", &selectedDish);
-    detail->price = dishes[selectedDish - 1].price;
-    strcpy(&detail->name, dishes[selectedDish - 1].name);
+    printf("Selected dish: %s - $%.2f\n", dish.name, dish.price);
+    detail->price = dish.price;
+    strcpy(&detail->name, dish.name);
+
     printf("Ingrese la cantidad: ");
     scanf("%d", &detail->quantity);
+
     printDetail(*detail);
     add_bill_detail(details, *detail);
+
     printf("Desea agregar otro platillo?\n");
     printf("[1] Si\n");
     printf("[2] No\n");
