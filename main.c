@@ -7,10 +7,12 @@
 #include "stats.c"
 #include "bills.c"
 #include "dishes.c"
+#include "database/init.c"
 
 int mainMenu()
 {
   system("cls");
+  // createTables();
   int option;
   printf("--------------------------------------------------\n          SISTEMA DE RESTAURANTE\n-------------------------------------------------- \n\n");
 

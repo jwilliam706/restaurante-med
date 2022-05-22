@@ -3,6 +3,8 @@
 
 typedef struct
 {
+    int id;
+    int dish_id;
     char name[20];
     int quantity;
     float price;
@@ -11,7 +13,9 @@ typedef struct
 
 typedef struct
 {
+    int id;
     int number;
+    int date;
     int customer_id;
     bill_detail items[10];
     float subtotal;

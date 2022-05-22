@@ -22,6 +22,15 @@ customer *createNewCustomer(){
 	return newCustomer;		
 }
 
+void printCustomer(customer *cust){
+	printf("\n ============================");
+	printf("\nC�digo: %d",cust->code);
+	printf("\nNombre: %s",cust->name);	
+	printf("\nTelefono: %d",cust->phone);	
+	printf("\nEmail: %s",cust->email);
+	printf("\nDireccion: %s",cust->address);
+}
+
 void printCustomers(){
 	// system("cls");
 	//Crear puntero auxiliar para recorrido de lista
@@ -39,15 +48,6 @@ void printCustomers(){
 	else{
 		printf("<<NO HAY customerS EN LA LISTA>>");
 	}
-}
-
-void printCustomer(customer *cust){
-	printf("\n ============================");
-	printf("\nC�digo: %d",cust->code);
-	printf("\nNombre: %s",cust->name);	
-	printf("\nTelefono: %d",cust->phone);	
-	printf("\nEmail: %s",cust->email);
-	printf("\nDireccion: %s",cust->address);
 }
 
 customer *getCustomer(){
