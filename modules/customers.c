@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "models/customer.h"
+#include "../models/customer.h"
 
 customer *first = NULL;
 customer *last = NULL;

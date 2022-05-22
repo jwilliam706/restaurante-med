@@ -37,12 +37,13 @@ void waitUser()
   getchar();
 }
 
-void basicConfigurations(char colorSetting[])
+void basicConfigurations()
 {
   setlocale(LC_ALL, "spanish");
+  // add support for money print
+  setlocale(LC_NUMERIC, "");
   SetConsoleCP(1252);
   SetConsoleOutputCP(1252);
-  system(colorSetting);
 }
 
 time_t getCurrentTime()

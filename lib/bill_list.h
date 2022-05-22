@@ -1,11 +1,13 @@
 #ifndef BILL_LIST_H
 #define BILL_LIST_H
 
-#include "../models/bill.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "../models/bill_detail.h"
 
 typedef struct
 {
-  bill_detail value;
+  bill_detail *value;
   struct bill_detail_node *next;
 } bill_detail_node;
 
@@ -25,7 +27,7 @@ bill_detail_list *create_bill_detail_list()
   return newList;
 }
 
-void add_bill_detail(bill_detail_list *list, bill_detail value)
+void addBillDetail(bill_detail_list *list, bill_detail *value)
 {
   bill_detail_node *newNode = malloc(sizeof(bill_detail_node));
   newNode->value = value;
@@ -33,7 +35,6 @@ void add_bill_detail(bill_detail_list *list, bill_detail value)
   if (list->head == NULL)
   {
     list->head = newNode;
-    newNode->next = NULL;
     list->tail = newNode;
   }
   else
@@ -44,7 +45,7 @@ void add_bill_detail(bill_detail_list *list, bill_detail value)
   list->size = list->size + 1;
 }
 
-void print_bill_details(bill_detail_list *list)
+void printBillDetails(bill_detail_list *list)
 {
   bill_detail_node *current = list->head;
   printf("\n----------Detalles de factura----------\n");

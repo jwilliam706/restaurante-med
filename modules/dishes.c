@@ -2,9 +2,9 @@
 #define DISHES_H
 #include <stdio.h>
 #include <stdlib.h>
-#include "models/dish.h"
-#include "lib/utils.h"
-#include "data/dish.c"
+#include "../models/dish.h"
+#include "../lib/utils.h"
+#include "../data/dish.c"
 
 dish readDish(int id)
 {
