@@ -7,6 +7,7 @@
 #include "stats.c"
 #include "bills.c"
 #include "dishes.c"
+#include "data/customer.c"
 
 int mainMenu()
 {
@@ -26,32 +27,36 @@ int mainMenu()
   return option;
 }
 
-int main(){
-    initDishValues();
-    int menuOption;
-    while (menuOption != 4) {
-      menuOption = mainMenu();
-      switch (menuOption)
-      {
-      case 1:
-        // Leer precios de los platillos
-        readDishes();
-        break;
-      case 2:
-        // Generar nueva factura
-        createNewBill();
-        break;
-      case 3:
-        // Estadisticas
-        stats();
-        break;
-      case 4:
-        // Salir
-        break;
-      
-      default:
-        printf("Opcion no valida\n");
-        break;
-      }
+int main()
+{
+  initCustomerList(customers);
+  addTestData(customers);
+  initDishValues();
+  int menuOption;
+  while (menuOption != 4)
+  {
+    menuOption = mainMenu();
+    switch (menuOption)
+    {
+    case 1:
+      // Leer precios de los platillos
+      readDishes();
+      break;
+    case 2:
+      // Generar nueva factura
+      createNewBill();
+      break;
+    case 3:
+      // Estadisticas
+      stats();
+      break;
+    case 4:
+      // Salir
+      break;
+
+    default:
+      printf("Opcion no valida\n");
+      break;
     }
+  }
 }
