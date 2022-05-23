@@ -4,10 +4,10 @@
 #include <string.h>
 #include <ctype.h>
 #include <locale.h>
-#include "stats.c"
-#include "bills.c"
-#include "dishes.c"
-#include "database/init.c"
+#include "modules/stats.c"
+#include "modules/bills.c"
+#include "modules/dishes.c"
+#include "lib/utils.h"
 
 int mainMenu()
 {
@@ -28,32 +28,35 @@ int mainMenu()
   return option;
 }
 
-int main(){
-    initDishValues();
-    int menuOption;
-    while (menuOption != 4) {
-      menuOption = mainMenu();
-      switch (menuOption)
-      {
-      case 1:
-        // Leer precios de los platillos
-        readDishes();
-        break;
-      case 2:
-        // Generar nueva factura
-        createNewBill();
-        break;
-      case 3:
-        // Estadisticas
-        stats();
-        break;
-      case 4:
-        // Salir
-        break;
-      
-      default:
-        printf("Opcion no valida\n");
-        break;
-      }
+int main()
+{
+  basicConfigurations();
+  initDishValues();
+  int menuOption;
+  while (menuOption != 4)
+  {
+    menuOption = mainMenu();
+    switch (menuOption)
+    {
+    case 1:
+      // Leer precios de los platillos
+      readDishes();
+      break;
+    case 2:
+      // Generar nueva factura
+      createNewBill();
+      break;
+    case 3:
+      // Estadisticas
+      stats();
+      break;
+    case 4:
+      // Salir
+      break;
+
+    default:
+      printf("Opcion no valida\n");
+      break;
     }
+  }
 }
