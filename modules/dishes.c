@@ -2,9 +2,9 @@
 #define DISHES_H
 #include <stdio.h>
 #include <stdlib.h>
-#include "utils.h"
-#include "models/dish.h"
-#include "data/dish.c"
+#include "../models/dish.h"
+#include "../lib/utils.h"
+#include "../data/dish.c"
 
 dish readDish(int id)
 {
@@ -20,7 +20,7 @@ dish readDish(int id)
 
 void readDishes()
 {
-    for(int i = 0; i < 7; i++)
+    for (int i = 0; i < 7; i++)
     {
         dishes[i] = readDish(i);
     }
@@ -28,9 +28,9 @@ void readDishes()
 
 void printDishes()
 {
-    for(int i = 0; i < 7; i++)
+    for (int i = 0; i < 7; i++)
     {
-        printf("%d - %s - $%.2f\n", dishes[i].id + 1, dishes[i].name, dishes[i].price);
+        printf("\n%d - %s - $%.2f", dishes[i].id + 1, dishes[i].name, dishes[i].price);
     }
 }
 #endif

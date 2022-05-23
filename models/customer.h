@@ -1,6 +1,5 @@
 #ifndef CUSTOMER_M_H
 #define CUSTOMER_M_H
-
 typedef struct
 {
 	int code;
