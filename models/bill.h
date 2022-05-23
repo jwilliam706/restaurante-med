@@ -7,7 +7,6 @@ typedef struct
 {
     int id;
     int number;
-    int date;
     int customer_id;
     bill_detail_list *details;
     time_t date;
