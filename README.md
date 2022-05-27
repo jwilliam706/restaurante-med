@@ -1,5 +1,17 @@
 # Sistema de Restaurante - Estructuras de datos
 
+## Dev
+Compilar:
+```console
+gcc sqlite3.dll main.c -o main.exe
+```
+
+Ejecutar:
+```console
+./main.exe
+```
+## Requerimientos
+
 
 En un restaurante se sirven 7 platillos diferentes y cada uno de ellos se identifica por una clave numérica que toma valores comprendidos entre 1 y 7.
 Diariamente se atienden numerosos clientes, por lo que es necesario generar facturas con este formato:
