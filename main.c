@@ -8,6 +8,7 @@
 #include "modules/bills.c"
 #include "modules/dishes.c"
 #include "lib/utils.h"
+#include "models/dish.h"
 
 int mainMenu()
 {
@@ -29,8 +30,9 @@ int mainMenu()
 
 int main()
 {
+  // createTables();
+  loadDishes();
   basicConfigurations();
-  initDishValues();
   int menuOption;
   while (menuOption != 4)
   {

@@ -4,12 +4,4 @@
 
   dish dishes[7];
 
-  void initDishValues() {
-    dish newDish;
-
-    newDish.id = 0;
-    strcpy(newDish.name, "Pizza");
-    newDish.price = 12.0;
-    dishes[0] = newDish;
-  }
 #endif
