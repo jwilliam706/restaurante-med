@@ -18,7 +18,7 @@ void addTestData(customer_list *list)
   strcpy(newCustomer->email, "carlos@gmail.com");
   strcpy(newCustomer->phone, "7099-2311");
   strcpy(newCustomer->address, "col. fatima");
-
+ 
   newCustomer2->code = 2;
   strcpy(newCustomer2->name, "Carlos");
   strcpy(newCustomer2->email, "carlos2@gmail.com");
@@ -30,11 +30,8 @@ void addTestData(customer_list *list)
 }
 
  void createTestCustomers(){
-   printf("Creando clientes de prueba, inicializando lista...\n");
-    initCustomerList(customers);
-   printf("Creando clientes de prueba, agregando datos...\n");
-    addTestData(customers);
-    printf("Clientes de prueba creados\n");
+    initCustomerList(&customers);
+    addTestData(&customers);
  }
 
 #endif
