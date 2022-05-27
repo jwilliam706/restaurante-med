@@ -31,8 +31,7 @@ int mainMenu()
 
 int main()
 {
-  initCustomerList(customers);
-  addTestData(customers);
+  createTestCustomers();
   // createTables();
   loadDishes();
   basicConfigurations();
