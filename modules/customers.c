@@ -3,22 +3,19 @@
 #include <string.h>
 #include <ctype.h>
 #include "../models/customer.h"
-
-customer *first = NULL;
-customer *last = NULL;
+#include "../data/customer.c"
 
 customer *createNewCustomer()
 {
 	system("cls");
 	customer *newCustomer = malloc(sizeof(customer));
-	// Ingresar customer desde el menu
 	printf("Ingreso de nuevo cliente\n");
 	printf("ID: ");
 	scanf("%d", &newCustomer->code);
 	printf("Nombre: ");
 	scanf(" %[^\n]", &newCustomer->name);
 	printf("Telefono: ");
-	scanf("%d", &newCustomer->phone);
+	scanf("%s", &newCustomer->phone);
 	printf("Email: ");
 	scanf(" %[^\n]", &newCustomer->email);
 	printf("Direccion: ");
@@ -27,59 +24,192 @@ customer *createNewCustomer()
 	return newCustomer;
 }
 
-void printCustomers()
+// Copy customer?
+customer *createCustomer(customer *from)
 {
-	// system("cls");
-	// Crear puntero auxiliar para recorrido de lista
-	customer *i = first;
-	int aux = 0;
-
-	// Preguntar si la lista no esta vacia
-	if (i != NULL)
-	{
-		printf("LISTADO DE customers");
-		while (i != NULL)
-		{
-			printCustomer(i);
-			i = i->next;
-		}
-	}
-	else
-	{
-		printf("<<NO HAY customerS EN LA LISTA>>");
-	}
+  customer *newCustomer = malloc(sizeof(customer));
+  newCustomer->code = from->code;
+  strcpy(newCustomer->name, from->name);
+  strcpy(newCustomer->email, from->email);
+  strcpy(newCustomer->phone, from->phone);
+  strcpy(newCustomer->address, from->address);
+  return newCustomer;
 }
 
-void printCustomer(customer *cust)
+customer *searchCustomerById()
 {
-	printf("\n ============================");
-	printf("\nC�digo: %d", cust->code);
-	printf("\nNombre: %s", cust->name);
-	printf("\nTelefono: %d", cust->phone);
-	printf("\nEmail: %s", cust->email);
-	printf("\nDireccion: %s", cust->address);
+  int *code;
+  int found = 0;
+  customer_node *current = customers->head;
+  printf("Digite el codigo de cliente a buscar: ");
+  scanf("%d", &code);
+  getchar();
+  while (current != NULL)
+  {
+    if (current->value->code == code)
+    {
+      return current->value;
+    }
+    current = current->next;
+  }
+  printf("\nCliente con codigo '%d' no encontrado...\n\n", code);
+  return NULL;
+}
+
+customer *searchCustomerByName()
+{
+  char name[50];
+  customer_node *current = customers->head;
+  customer_list *foundResults = malloc(sizeof(customer_list));
+  printf("Digite el nombre del cliente a buscar: ");
+  readString(name, 50);
+  while (current != NULL)
+  {
+    if (strcmp(current->value->name, name) == 0)
+    {
+      customer *newCustomer = createCustomer(current->value);
+      addCustomer(foundResults, newCustomer);
+    }
+    printf("a %d", &foundResults->size);
+    current = current->next;
+    printf("b");
+  }
+  printf("\nClientes con nombre '%s' encontrados: %d\n", name, foundResults->size);
+  if (foundResults->size == 1)
+  {
+    return foundResults->head->value;
+  }
+  else if (foundResults->size > 1)
+  {
+    printf("----------\n");
+    printf(customers->head->value->name);
+    printf("\n");
+    printf(foundResults->head->value->name);
+    printf("----------\n");
+    printf("\nSe encontraron mas de un cliente con el nombre '%s'\n", name);
+    printf("N de clientes encontrados: %d\n", foundResults->size);
+    // printCustomers(foundResults);
+  }
+  else
+  {
+    printf("\n Cliente con nombre '%s' no encontrado\n\n", name);
+  }
+  return NULL;
+}
+
+customer *searchCustomer()
+{
+	int option;
+	customer *customer;
+	system("cls");
+	if (customers->head == NULL)
+	{
+		printf("La lista esta vacia");
+		return NULL;
+	}
+	printf("mmm");
+	while (option != 3)
+	{
+		printf("Buscar cliente\n");
+		printf("=====================================\n");
+		printf("1. Buscar por id\n");
+		printf("2. Buscar por nombre\n\n");
+		printf("3. Cancelar\n");
+		printf("=====================================\n");
+		printf("Opcion: ");
+		scanf("%d", &option);
+		getchar();
+		switch (option)
+		{
+		case 1:
+			customer = searchCustomerById();
+			if (customer != NULL)
+			{
+				return customer;
+			}
+			break;
+		case 2:
+			customer = searchCustomerByName();
+			if (customer != NULL)
+			{
+				return customer;
+			}
+			break;
+		case 3:
+			return NULL;
+		default:
+			break;
+		}
+	}
+	return NULL;
 }
 
 customer *getCustomer()
 {
 	int option = 0;
-	printf("CREAR FACTURA: Ingrese un cliente\n");
-	printf("=====================================\n");
-	printf("1. Nuevo cliente\n");
-	printf("2. Existente\n");
-	scanf("%d", &option);
-	getchar();
-	switch (option)
+	customer *customer;
+
+	while (option != 3)
 	{
-	case 1:
-		createNewCustomer();
-		break;
-	case 2:
-		// Mostrar buscar o ingresar id
-		return NULL;
-		break;
-	default:
-		return NULL;
-		break;
+		printf("Ingrese un cliente\n");
+		printf("=====================================\n");
+		printf("1. Nuevo cliente\n");
+		printf("2. Existente\n\n");
+		printf("3. Cancelar\n");
+		printf("=====================================\n");
+		printf("Opcion: ");
+		scanf("%d", &option);
+		getchar();
+		switch (option)
+		{
+		case 1:
+			customer = createNewCustomer();
+			if (customer != NULL)
+			{
+				return customer;
+			}
+		case 2:
+			customer = searchCustomer();
+			if (customer != NULL)
+			{
+				return customer;
+			}
+		case 3:
+			return NULL;
+		default:
+			break;
+		}
 	}
+	return NULL;
+}
+
+void printCustomer(customer *customer)
+{
+  printf("\n\----DATOS DE CLIENTE----\n");
+  printf("\Mem add: %d", &customer);
+  printf("\nCodigo %d", customer->code);
+  printf("\nNombre %s", customer->name);
+  printf("\nDireccion %s", customer->address);
+  printf("\nEmail %s", customer->email);
+  printf("\nTelefono %s\n\n", customer->phone);
+}
+
+void printCustomers(customer_list *list)
+{
+  customer_node *current = list->head;
+  if (current != NULL)
+  {
+    printf("---Lista de clientes---\n");
+    while (current != NULL)
+    {
+      printf("cliente: %d\n", current->value->code);
+      printCustomer(current->value);
+      current = current->next;
+    }
+  }
+  else
+  {
+    printf("Lista de clientes vacia...");
+  }
+  system("pause");
 }

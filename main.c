@@ -7,8 +7,9 @@
 #include "modules/stats.c"
 #include "modules/bills.c"
 #include "modules/dishes.c"
-#include "lib/utils.h"
 #include "models/dish.h"
+#include "data/customer.c"
+#include "lib/utils.h"
 
 int mainMenu()
 {
@@ -30,6 +31,7 @@ int mainMenu()
 
 int main()
 {
+  createTestCustomers();
   // createTables();
   loadDishes();
   basicConfigurations();
