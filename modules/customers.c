@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "models/customer.h"
-#include "data/customer.c"
+#include "../models/customer.h"
+#include "../data/customer.c"
 
 customer *createNewCustomer()
 {

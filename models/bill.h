@@ -5,6 +5,7 @@
 
 typedef struct
 {
+    int id;
     int number;
     int customer_id;
     bill_detail_list *details;

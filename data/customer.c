@@ -6,7 +6,7 @@
 #include "../models/customer.h"
 #include "../lib/customer_node.h"
 #include "../lib/customer_list.h"
-#include "../utils.h"
+#include "../lib/utils.h"
 
 customer_list *customers;
 

@@ -4,10 +4,12 @@
 #include <string.h>
 #include <ctype.h>
 #include <locale.h>
-#include "stats.c"
-#include "bills.c"
-#include "dishes.c"
+#include "modules/stats.c"
+#include "modules/bills.c"
+#include "modules/dishes.c"
+#include "models/dish.h"
 #include "data/customer.c"
+#include "lib/utils.h"
 
 int mainMenu()
 {
@@ -31,7 +33,9 @@ int main()
 {
   initCustomerList(customers);
   addTestData(customers);
-  initDishValues();
+  // createTables();
+  loadDishes();
+  basicConfigurations();
   int menuOption;
   while (menuOption != 4)
   {
