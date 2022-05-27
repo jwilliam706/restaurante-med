@@ -72,6 +72,7 @@ void printBill(bill *bill)
   bill_detail_node *current = bill->details->head;
   while (current != NULL)
   {
+    // print detai?
     printf("%s", current->value->name);
     printf("\t\t%d", current->value->quantity);
     printf("\t\t$%'.2f", current->value->price);
@@ -88,4 +89,10 @@ void printBill(bill *bill)
   //- Table Footer
   printf("-------------------------------------------------------------------------------------\n");
   printf("\nTotal a pagar: ------------------------------------------------------------$%'.2f\n\n", accumulator);
+}
+
+void printDetail(bill_detail *detail)
+{
+    float total = detail->price * detail->quantity;
+    printf("%s - %d x %.2f = %.2f \n", detail->name, detail->quantity, detail->price, total);
 }

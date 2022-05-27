@@ -2,7 +2,13 @@
 #define CUSTOMER_LIST_H
 
 #include "stdio.h"
-#include "customer_node.h"
+#include "../models/customer.h"
+
+typedef struct
+{
+  customer *value;
+  struct customer_node *next;
+} customer_node;
 
 typedef struct
 {
