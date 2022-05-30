@@ -4,6 +4,37 @@
 #include <ctype.h>
 #include "../models/customer.h"
 #include "../data/customer.c"
+#include "../lib/constants.h"
+#include "../database/sqlite3.h"
+
+void saveCustomer(customer *newCustomer)
+{
+	sqlite3 *db;
+  char *error = 0;
+  int res;
+  char sql[200];
+
+   res = sqlite3_open(DB_FILE, &db);
+   if (res)
+     {
+       printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
+       exit(0);
+     }
+
+  snprintf(sql, 200, "INSERT INTO customers (name, phone, email, address) VALUES ('%s', '%s', '%s', '%s');",
+  newCustomer->name, newCustomer->phone, newCustomer->email, newCustomer->address);
+
+  res = sqlite3_exec(db, sql, NULL, 0, &error);
+   if (res != SQLITE_OK)
+   {
+      printf("Error: %s\n", error);
+      sqlite3_free(error);
+   }
+   else
+   {
+      printf("\n>>DATOS ALMACENADOS CORRECTAMENTE<<");
+   }
+}
 
 customer *createNewCustomer()
 {
@@ -19,7 +50,7 @@ customer *createNewCustomer()
 	scanf(" %[^\n]", &newCustomer->email);
 	printf("Direccion: ");
 	scanf(" %[^\n]", &newCustomer->address);
-	printf("\n>>DATOS ALMACENADOS CORRECTAMENTE<<");
+	saveCustomer(newCustomer);
 	return newCustomer;
 }
 

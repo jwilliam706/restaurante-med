@@ -47,18 +47,27 @@ bill_detail_list *readBillDetails()
   return details;
 }
 
+int getNextBillNumber(){
+  // TODO: Implementar metodo para retornar el siguiente numero de factura
+  // Tomar en cuenta que las facturas se numeran de 1 a N para cada dia
+  return 1;
+}
+
 void createNewBill()
 {
   bill newBill;
-  customer *newCustomer;
-  // newCustomer = getCustomer();
-  // newBill.customer_id = newCustomer->code;
-  newBill.number = 1;
-  newBill.date = getCurrentTime();
-  newBill.details = readBillDetails();
-  printBill(&newBill);
-  printf("Orden registrada con exito!\n");
-  waitUser();
+  customer *customer;
+  customer = getCustomer();
+  if (customer != NULL)
+  {
+    newBill.customer_id = customer->id;
+    newBill.number = getNextBillNumber();
+    newBill.date = getCurrentTime();
+    newBill.details = readBillDetails();
+    printBill(&newBill);
+    printf("Orden registrada con exito!\n");
+    waitUser();
+  }
 }
 
 void printBill(bill *bill)
