@@ -10,8 +10,7 @@ customer *createNewCustomer()
 	system("cls");
 	customer *newCustomer = malloc(sizeof(customer));
 	printf("Ingreso de nuevo cliente\n");
-	printf("ID: ");
-	scanf("%d", &newCustomer->code);
+  newCustomer->id = NULL;
 	printf("Nombre: ");
 	scanf(" %[^\n]", &newCustomer->name);
 	printf("Telefono: ");
@@ -28,7 +27,7 @@ customer *createNewCustomer()
 customer *createCustomer(customer *from)
 {
   customer *newCustomer = malloc(sizeof(customer));
-  newCustomer->code = from->code;
+  newCustomer->id = from->id;
   strcpy(newCustomer->name, from->name);
   strcpy(newCustomer->email, from->email);
   strcpy(newCustomer->phone, from->phone);
@@ -38,21 +37,21 @@ customer *createCustomer(customer *from)
 
 customer *searchCustomerById()
 {
-  int *code;
+  int *id;
   int found = 0;
   customer_node *current = customers->head;
   printf("Digite el codigo de cliente a buscar: ");
-  scanf("%d", &code);
+  scanf("%d", &id);
   getchar();
   while (current != NULL)
   {
-    if (current->value->code == code)
+    if (current->value->id == id)
     {
       return current->value;
     }
     current = current->next;
   }
-  printf("\nCliente con codigo '%d' no encontrado...\n\n", code);
+  printf("\nCliente con codigo '%d' no encontrado...\n\n", id);
   return NULL;
 }
 
@@ -185,9 +184,8 @@ customer *getCustomer()
 
 void printCustomer(customer *customer)
 {
-  printf("\n\----DATOS DE CLIENTE----\n");
-  printf("\Mem add: %d", &customer);
-  printf("\nCodigo %d", customer->code);
+  printf("\n---DATOS DE CLIENTE----\n");
+  printf("\nCodigo %d", customer->id);
   printf("\nNombre %s", customer->name);
   printf("\nDireccion %s", customer->address);
   printf("\nEmail %s", customer->email);
@@ -202,7 +200,7 @@ void printCustomers(customer_list *list)
     printf("---Lista de clientes---\n");
     while (current != NULL)
     {
-      printf("cliente: %d\n", current->value->code);
+      printf("cliente: %d\n", current->value->id);
       printCustomer(current->value);
       current = current->next;
     }
