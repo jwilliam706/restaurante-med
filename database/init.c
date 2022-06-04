@@ -21,7 +21,7 @@ void createTables(){
      }
 
    sql = "CREATE TABLE dishes ("
-     "`id` INT PRIMARY KEY, "
+     "`id` INTEGER PRIMARY KEY, "
      "`name` TEXT, "
      "`price` FLOAT)";
 
@@ -37,11 +37,11 @@ void createTables(){
      }
 
    sql = "CREATE TABLE customers ("
-      "`id` INT PRIMARY KEY, "
+      "`id` INTEGER PRIMARY KEY, "
       "`name` TEXT, "
-      "`phone` INT, "
+      "`phone` TEXT, "
       "`email` TEXT, "
-      "`addresss` TEXT)";
+      "`address` TEXT)";
 
        res = sqlite3_exec(db, sql, NULL, 0, &error);
    if (res != SQLITE_OK)
@@ -55,7 +55,7 @@ void createTables(){
      }
 
    sql = "CREATE TABLE bills ("
-      "`id` INT PRIMARY KEY, "
+      "`id` INTEGER PRIMARY KEY, "
       "`number` INT, "
       "`date` DATETIME, "
       "`subtotal` FLOAT, "
@@ -76,7 +76,7 @@ void createTables(){
      }
 
    sql = "CREATE TABLE bill_details ("
-      "`id` INT PRIMARY KEY, "
+      "`id` INTEGER PRIMARY KEY, "
       "`bill_id` INT, "
       "`dish_id` INT, "
       "`quantity` INT, "

@@ -50,10 +50,6 @@ void saveDish(dish *newDish)
        printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
        exit(0);
      }
-   else
-     {
-       printf("Base de datos OK\n");
-     }
 
   snprintf(sql, 200, "INSERT INTO dishes (id, name, price) VALUES (%d, '%s', %lf);", newDish->id, newDish->name, newDish->price);
 
