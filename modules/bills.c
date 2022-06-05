@@ -50,6 +50,17 @@ bill_detail_list *readBillDetails()
 int getNextBillNumber(){
   // TODO: Implementar metodo para retornar el siguiente numero de factura
   // Tomar en cuenta que las facturas se numeran de 1 a N para cada dia
+  bill newBill;
+  int ultimo = 0;
+  while(newBill!=NULL){
+  	ultimo = newBill->id;
+	newBill = newBill->details->head;
+	}
+	ultimo = ultimo+1;
+}
+				
+  
+  
   return 1;
 }
 
