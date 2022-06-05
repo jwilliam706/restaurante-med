@@ -105,3 +105,61 @@ void printDetail(bill_detail *detail)
     float total = detail->price * detail->quantity;
     printf("%s - %d x %.2f = %.2f \n", detail->name, detail->quantity, detail->price, total);
 }
+
+void searchBill(){
+	//- Search trough IDbill or idClient?
+	bill newBill;
+	int opcion = 0;
+	int codigo = 0;
+	int codigoCliente = 0;
+	int fEncontrado = 0;
+	int cEncontrado = 0;
+	printf("Buscar Factura");
+	prtinf("Favor ingresar una de las siguientes opciones");
+	printf("[1] Buscar por ID Factura");
+	printf("[2] Buscar por ID Cliente");
+	scanf("%d",&opcion);
+	switch(opcion){
+			case 1:
+				// - ID Factura search
+				printf("Digite codigo a buscar: ");
+				scanf("%d",&codigo);
+				while(newBill!=NULL){
+					if(newBill->id==codigo){
+						printf("\nCodigo %d",newBill->id);
+						printf("\nCodigo de cliente  %d",newBill->customer_id);
+						printf("\nSubTotal %f",newBill->subtotal);
+						printf("\nTotal %f",newBill->total);
+					fEncontrado=1;
+					break;
+					}
+					newBill = newBill->details->head;
+					}
+				if(fEncontrado==0)
+				printf("\n Codigo no encontrado");
+				break;
+			case 2:
+				// - ID Client search
+				printf("Digite codigo de cliente a buscar: ");
+				scanf("%d",&codigoCliente);
+				while(newBill!=NULL){
+					if(newBill->customer_id==codigoCliente);
+						printf("\nCodigo %d",newBill->id);
+						printf("\nCodigo de cliente  %d",newBill->customer_id);
+						printf("\nSubTotal %f",newBill->subtotal);
+						printf("\nTotal %f",newBill->total);
+					cEncontrado=1;
+				}
+				newBill = newBill->details->head;
+				
+				if(cEncontrado==0)
+				printf("\n Codigo no encontrado");
+				break;
+			default:
+				system("cls");
+				printf("\n Opcion incorrecta\n");
+				system("pause");
+				printf("Ingresar una de las siguientes opciones:");
+				searchBill();
+			}
+}
