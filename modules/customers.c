@@ -41,7 +41,7 @@ customer *createNewCustomer()
 	system("cls");
 	customer *newCustomer = malloc(sizeof(customer));
 	printf("Ingreso de nuevo cliente\n");
-  newCustomer->id = NULL;
+  newCustomer->id = 0;
 	printf("Nombre: ");
 	scanf(" %[^\n]", &newCustomer->name);
 	printf("Telefono: ");
@@ -231,7 +231,6 @@ void printCustomers(customer_list *list)
     printf("---Lista de clientes---\n");
     while (current != NULL)
     {
-      printf("cliente: %d\n", current->value->id);
       printCustomer(current->value);
       current = current->next;
     }
@@ -241,4 +240,42 @@ void printCustomers(customer_list *list)
     printf("Lista de clientes vacia...");
   }
   system("pause");
+}
+
+void loadCustomers(){
+  sqlite3 *db;
+  char *error = 0;
+  int res;
+  char *sql;
+  sqlite3_stmt *stmt;
+
+   res = sqlite3_open(DB_FILE, &db);
+   if (res)
+     {
+       printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
+       exit(0);
+     }
+
+  sql = "SELECT * FROM customers;";
+
+  res = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
+
+  if (res != SQLITE_OK)
+  {
+    printf("Error: %s\n", sqlite3_errmsg(db));
+    exit(0);
+  }
+
+  while (sqlite3_step(stmt) == SQLITE_ROW)
+  {
+    customer *c = malloc(sizeof(customer));
+    c->id = sqlite3_column_int(stmt, 0);
+    strcpy(c->name, sqlite3_column_text(stmt, 1));
+    strcpy(c->phone, sqlite3_column_text(stmt, 2));
+    strcpy(c->email, sqlite3_column_text(stmt, 3));
+    strcpy(c->address, sqlite3_column_text(stmt, 4));
+    addCustomer(customers, c);
+  }
+
+  sqlite3_finalize(stmt);
 }

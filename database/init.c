@@ -15,10 +15,6 @@ void createTables(){
        fprintf(stderr, "No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
        exit(0);
      }
-   else
-     {
-       fprintf(stderr, "Base de datos OK\n");
-     }
 
    sql = "CREATE TABLE dishes ("
      "`id` INTEGER PRIMARY KEY, "
