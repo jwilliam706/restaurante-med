@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "../models/customer.h"
-#include "../data/customer.c"
+#include "../data/customers.c"
 #include "../lib/constants.h"
 #include "../database/sqlite3.h"
 
@@ -68,7 +68,7 @@ customer *createCustomer(customer *from)
 
 customer *searchCustomerById()
 {
-  int *id;
+  int id;
   int found = 0;
   customer_node *current = customers->head;
   printf("Digite el codigo de cliente a buscar: ");

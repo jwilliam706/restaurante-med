@@ -8,9 +8,9 @@
 #include "modules/bills.c"
 #include "modules/dishes.c"
 #include "models/dish.h"
-#include "data/customer.c"
+#include "data/customers.c"
+#include "data/bills.c"
 #include "lib/utils.h"
-#include "data/customer.c"
 
 int mainMenu()
 {
@@ -34,6 +34,7 @@ int main()
 {
   // createTables();
   initCustomerList(&customers);
+  initBillList(&bills);
   loadDishes();
   loadCustomers();
   basicConfigurations();

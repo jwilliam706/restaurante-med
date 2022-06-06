@@ -1,20 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include "dishes.c"
 #include "customers.c"
-
 #include "../models/bill.h"
 #include "../lib/utils.h"
 #include "../lib/bill_list.h"
+#include "../lib/constants.h"
+#include "../database/sqlite3.h"
 
-dish *getDish()
+void saveBill(bill *newBill)
 {
-  int selectedDish;
-  printDishes();
-  printf("\nSeleccione el platillo: ");
-  scanf("%d", &selectedDish);
-  return &dishes[selectedDish - 1];
+	sqlite3 *db;
+  char *error = 0;
+  int res;
+  char sql[200];
+
+   res = sqlite3_open(DB_FILE, &db);
+   if (res)
+     {
+       printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
+       exit(0);
+     }
+
+  snprintf(sql, 200, "INSERT INTO bills (number, date, subtotal, iva, total, customer_id) VALUES (%d, %ld, %lf, %lf, %lf, %d);",
+  newBill->number, newBill->date, newBill->subtotal, newBill->iva, newBill->total, newBill->customer_id);
+
+  res = sqlite3_exec(db, sql, NULL, 0, &error);
+   if (res != SQLITE_OK)
+   {
+      printf("Error: %s\n", error);
+      sqlite3_free(error);
+   }
+   int id = sqlite3_last_insert_rowid(db);
+   printf("Registro insertado! bill id: %d\n", id);
 }
 
 bill_detail_list *readBillDetails()
@@ -36,7 +54,7 @@ bill_detail_list *readBillDetails()
 
     detail->subTotal = detail->price * detail->quantity;
     addBillDetail(details, detail);
-    printDetail(detail);
+    printBillDetail(detail);
     printf("Desea agregar otro platillo?\n");
     printf("[1] Si\n");
     printf("[2] No\n");
@@ -53,55 +71,46 @@ int getNextBillNumber(){
   return 1;
 }
 
+void calculateBillTotal(bill_detail_list *details)
+{
+  // TODO: Implementar metodo para calcular el total de la factura
+}
+
+void printBill(bill *bill)
+{
+  printf("---------------------------------------Factura----------------------------------------\n");
+  printf("\nFecha de factura: %s\n", getLocaleCurrentTime(&(bill->date)));
+  printf("\nPlatillo\tCantidad\tPrecio Unitario\t\tSub total");
+  printf("\n-------------------------------------------------------------------------------------\n");
+  bill_detail_node *current = bill->details->head;
+  while (current != NULL)
+  {
+    printf("%s", current->value->name);
+    printf("\t\t%d", current->value->quantity);
+    printf("\t\t$%'.2f", current->value->price);
+    printf("\t\t\t$%'.2f", current->value->subTotal);
+    printf("\n");
+  }
+
+  printf("-------------------------------------------------------------------------------------\n");
+  printf("\nSubtotal: ------------------------------------------------------------$%'.2f\n\n", bill->subtotal);
+  printf("\nIVA: ------------------------------------------------------------$%'.2f\n\n", bill->iva);
+  printf("\nTotal a pagar: ------------------------------------------------------------$%'.2f\n\n", bill->total);
+}
+
 void createNewBill()
 {
   bill newBill;
-  customer *customer;
-  customer = getCustomer();
+  customer *customer = getCustomer();
   if (customer != NULL)
   {
     newBill.customer_id = customer->id;
     newBill.number = getNextBillNumber();
     newBill.date = getCurrentTime();
     newBill.details = readBillDetails();
+    calculateBillTotal(newBill.details);
     printBill(&newBill);
-    printf("Orden registrada con exito!\n");
+    saveBill(&newBill);
     waitUser();
   }
-}
-
-void printBill(bill *bill)
-{
-
-  double accumulator = 0.0; //- total of invoice acum
-  printf("---------------------------------------Factura----------------------------------------\n");
-  printf("\nFecha de factura: %s\n", getLocaleCurrentTime(bill->date));
-  printf("\nPlatillo\tCantidad\tPrecio Unitario\t\tSub total");
-  printf("\n-------------------------------------------------------------------------------------\n");
-  bill_detail_node *current = bill->details->head;
-  while (current != NULL)
-  {
-    // print detai?
-    printf("%s", current->value->name);
-    printf("\t\t%d", current->value->quantity);
-    printf("\t\t$%'.2f", current->value->price);
-    printf("\t\t\t$%'.2f", current->value->subTotal);
-    printf("\n");
-
-    //- Acum of total value
-    accumulator += current->value->subTotal;
-
-    //- Next Item
-    current = current->next;
-  }
-
-  //- Table Footer
-  printf("-------------------------------------------------------------------------------------\n");
-  printf("\nTotal a pagar: ------------------------------------------------------------$%'.2f\n\n", accumulator);
-}
-
-void printDetail(bill_detail *detail)
-{
-    float total = detail->price * detail->quantity;
-    printf("%s - %d x %.2f = %.2f \n", detail->name, detail->quantity, detail->price, total);
 }
