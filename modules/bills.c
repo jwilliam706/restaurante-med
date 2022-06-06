@@ -8,31 +8,64 @@
 #include "../lib/constants.h"
 #include "../database/sqlite3.h"
 
-void saveBill(bill *newBill)
+int saveBill(bill *newBill, bill_detail_list *details)
 {
-	sqlite3 *db;
+  sqlite3 *db;
   char *error = 0;
   int res;
   char sql[200];
 
-   res = sqlite3_open(DB_FILE, &db);
-   if (res)
-     {
-       printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
-       exit(0);
-     }
+  res = sqlite3_open(DB_FILE, &db);
+  if (res)
+  {
+    printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
+    exit(0);
+  }
 
   snprintf(sql, 200, "INSERT INTO bills (number, date, subtotal, iva, total, customer_id) VALUES (%d, %ld, %lf, %lf, %lf, %d);",
-  newBill->number, newBill->date, newBill->subtotal, newBill->iva, newBill->total, newBill->customer_id);
+           newBill->number, newBill->date, newBill->subtotal, newBill->iva, newBill->total, newBill->customer_id);
 
   res = sqlite3_exec(db, sql, NULL, 0, &error);
-   if (res != SQLITE_OK)
-   {
+  if (res != SQLITE_OK)
+  {
+    printf("Error: %s\n", error);
+    sqlite3_free(error);
+  }
+  int id = sqlite3_last_insert_rowid(db);
+  saveBillDetails(id, &details);
+  printf("Registro insertado! bill id: %d\n", id);
+  return id;
+}
+
+void saveBillDetails(int bill_id, bill_detail_list *details)
+{
+  sqlite3 *db;
+  char *error = 0;
+  int res;
+  char sql[200];
+
+  res = sqlite3_open(DB_FILE, &db);
+  if (res)
+  {
+    printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
+    exit(0);
+  }
+
+  bill_detail_node *current = details->head;
+  int successCount = 0;
+  while (current != NULL)
+  {
+    res = sqlite3_exec(db, sql, NULL, 0, &error);
+    if (res != SQLITE_OK)
+    {
       printf("Error: %s\n", error);
       sqlite3_free(error);
-   }
-   int id = sqlite3_last_insert_rowid(db);
-   printf("Registro insertado! bill id: %d\n", id);
+    }
+    int id = sqlite3_last_insert_rowid(db);
+    successCount++;
+    current = current->next;
+  }
+  printf("Registros insertados en factura %d! %d\n", bill_id, successCount);
 }
 
 bill_detail_list *readBillDetails()
@@ -65,7 +98,8 @@ bill_detail_list *readBillDetails()
   return details;
 }
 
-int getNextBillNumber(){
+int getNextBillNumber()
+{
   // TODO: Implementar metodo para retornar el siguiente numero de factura
   // Tomar en cuenta que las facturas se numeran de 1 a N para cada dia
   return 1;
@@ -110,7 +144,7 @@ void createNewBill()
     newBill.details = readBillDetails();
     calculateBillTotal(newBill.details);
     printBill(&newBill);
-    saveBill(&newBill);
+    int billId = saveBill(&newBill, newBill.details);
     waitUser();
   }
 }
