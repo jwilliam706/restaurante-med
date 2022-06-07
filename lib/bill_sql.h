@@ -42,7 +42,7 @@ bill_detail_list *loadBillDetails(int id)
     detail->dish_id = sqlite3_column_int(stmt, 2);
     detail->quantity = sqlite3_column_int(stmt, 3);
     detail->price = sqlite3_column_double(stmt, 4);
-    // addBillDetail(billDetails, detail);
+    addBillDetail(billDetails, detail);
   }
 
   sqlite3_finalize(stmt);
