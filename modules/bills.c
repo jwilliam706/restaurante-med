@@ -125,7 +125,7 @@ void searchBill(){
 	int fEncontrado = 0;
 	int cEncontrado = 0;
 	printf("Buscar Factura");
-	prtinf("Favor ingresar una de las siguientes opciones");
+	printf("Favor ingresar una de las siguientes opciones");
 	printf("[1] Buscar por ID Factura");
 	printf("[2] Buscar por ID Cliente");
 	scanf("%d",&opcion);
