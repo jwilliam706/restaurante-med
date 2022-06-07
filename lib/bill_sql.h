@@ -8,12 +8,12 @@
 #include "../lib/constants.h"
 #include "../database/sqlite3.h"
 
-bill_detail_list *loadBillDetails(int id)
+bill_detail_list *loadBillDetails(int *id)
 {
   sqlite3 *db;
   char *error = 0;
   int res;
-  char *sql;
+  char sql[100];
   sqlite3_stmt *stmt;
 
   res = sqlite3_open(DB_FILE, &db);
@@ -23,10 +23,8 @@ bill_detail_list *loadBillDetails(int id)
     exit(0);
   }
 
-  sql = "SELECT * FROM bill_details;";
-
+  snprintf(sql, 100, "SELECT * FROM bill_details where id = %d;", id);
   res = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
-
   if (res != SQLITE_OK)
   {
     printf("Error: %s\n", sqlite3_errmsg(db));
@@ -75,7 +73,6 @@ bill_list *loadBills()
 
   bill_list *bills;
   initBillList(&bills);
-
   while (sqlite3_step(stmt) == SQLITE_ROW)
   {
     bill *bill = malloc(sizeof(bill));
@@ -87,6 +84,7 @@ bill_list *loadBills()
     bill->total = sqlite3_column_double(stmt, 5);
     bill->customer_id = sqlite3_column_int(stmt, 6);
     bill->details = loadBillDetails(bill->id);
+    printf("Cantidad de detalles para bill # %d: %d\n", bill->number, bill->details->size);
     addBill(bills, bill);
   }
 
