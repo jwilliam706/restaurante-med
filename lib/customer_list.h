@@ -44,9 +44,4 @@ void addCustomer(customer_list *list, customer *data)
   list->size = list->size + 1;
 }
 
-void printSize(customer_list *list)
-{
-  printf("%d\n", list->size);
-}
-
 #endif

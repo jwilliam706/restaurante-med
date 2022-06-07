@@ -1,7 +1,7 @@
 #ifndef BILL_H
 #define BILL_H
 
-#include "../lib/bill_list.h"
+#include "../lib/bill_detail_list.h"
 
 typedef struct
 {

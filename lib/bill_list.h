@@ -2,35 +2,34 @@
 #define BILL_LIST_H
 
 #include <stdio.h>
-#include <stdlib.h>
-#include "../models/bill_detail.h"
+#include "../models/bill.h"
+
+typedef struct BillNode
+{
+  bill *value;
+  struct BillNode *next;
+} bill_node;
 
 typedef struct
 {
-  bill_detail *value;
-  struct bill_detail_node *next;
-} bill_detail_node;
-
-typedef struct
-{
-  bill_detail_node *head;
-  bill_detail_node *tail;
+  bill_node *head;
+  bill_node *tail;
   int size;
-} bill_detail_list;
+} bill_list;
 
-bill_detail_list *create_bill_detail_list()
+void initBillList(bill_list **list)
 {
-  bill_detail_list *newList = malloc(sizeof(bill_detail_list));
-  newList->size = 0;
-  newList->head = NULL;
-  newList->tail = NULL;
-  return newList;
+  *list = malloc(sizeof(bill_list));
+
+  (*list)->size = 0;
+  (*list)->head = NULL;
+  (*list)->tail = NULL;
 }
 
-void addBillDetail(bill_detail_list *list, bill_detail *value)
+void addBill(bill_list *list, bill *data)
 {
-  bill_detail_node *newNode = malloc(sizeof(bill_detail_node));
-  newNode->value = value;
+  bill_node *newNode = malloc(sizeof(bill_node));
+  newNode->value = data;
   newNode->next = NULL;
   if (list->head == NULL)
   {
@@ -43,17 +42,6 @@ void addBillDetail(bill_detail_list *list, bill_detail *value)
     list->tail = newNode;
   }
   list->size = list->size + 1;
-}
-
-void printBillDetails(bill_detail_list *list)
-{
-  bill_detail_node *current = list->head;
-  printf("\n----------Detalles de factura----------\n");
-  while (current != NULL)
-  {
-    printDetail(current->value);
-    current = current->next;
-  }
 }
 
 #endif
