@@ -50,18 +50,17 @@ bill_detail_list *readBillDetails()
 int getNextBillNumber(){
   // TODO: Implementar metodo para retornar el siguiente numero de factura
   // Tomar en cuenta que las facturas se numeran de 1 a N para cada dia
-  bill newBill;
+  bill *gBill;
+  time_t time;
   int ultimo = 0;
-  while(newBill!=NULL){
-  	ultimo = newBill->id;
-	newBill = newBill->details->head;
+  while(gBill!=NULL){
+  	if (gBill->date == time){
+  		ultimo = gBill->id;
+		gBill = gBill->details->head;
+	  }
 	}
 	ultimo = ultimo+1;
-}
-				
-  
-  
-  return 1;
+  return ultimo;
 }
 
 void createNewBill()
@@ -119,7 +118,7 @@ void printDetail(bill_detail *detail)
 
 void searchBill(){
 	//- Search trough IDbill or idClient?
-	bill newBill;
+	bill *sBill;
 	int opcion = 0;
 	int codigo = 0;
 	int codigoCliente = 0;
@@ -135,16 +134,16 @@ void searchBill(){
 				// - ID Factura search
 				printf("Digite codigo a buscar: ");
 				scanf("%d",&codigo);
-				while(newBill!=NULL){
-					if(newBill->id==codigo){
-						printf("\nCodigo %d",newBill->id);
-						printf("\nCodigo de cliente  %d",newBill->customer_id);
-						printf("\nSubTotal %f",newBill->subtotal);
-						printf("\nTotal %f",newBill->total);
+				while(sBill !=NULL){
+					if(sBill->customer_id==codigo){
+						printf("\nCodigo %d",sBill->id);
+						printf("\nCodigo de cliente  %d",sBill->customer_id);
+						printf("\nSubTotal %f",sBill->subtotal);
+						printf("\nTotal %f",sBill->total);
 					fEncontrado=1;
 					break;
 					}
-					newBill = newBill->details->head;
+					sBill = sBill->details->head;
 					}
 				if(fEncontrado==0)
 				printf("\n Codigo no encontrado");
@@ -153,15 +152,15 @@ void searchBill(){
 				// - ID Client search
 				printf("Digite codigo de cliente a buscar: ");
 				scanf("%d",&codigoCliente);
-				while(newBill!=NULL){
-					if(newBill->customer_id==codigoCliente);
-						printf("\nCodigo %d",newBill->id);
-						printf("\nCodigo de cliente  %d",newBill->customer_id);
-						printf("\nSubTotal %f",newBill->subtotal);
-						printf("\nTotal %f",newBill->total);
+				while(sBill!=NULL){
+					if(sBill->customer_id==codigoCliente);
+						printf("\nCodigo %d",sBill->id);
+						printf("\nCodigo de cliente  %d",sBill->customer_id);
+						printf("\nSubTotal %f",sBill->subtotal);
+						printf("\nTotal %f",sBill->total);
 					cEncontrado=1;
 				}
-				newBill = newBill->details->head;
+				sBill = sBill->details->head;
 				
 				if(cEncontrado==0)
 				printf("\n Codigo no encontrado");
