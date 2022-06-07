@@ -4,10 +4,10 @@
 #include <stdio.h>
 #include "../models/customer.h"
 
-typedef struct
+typedef struct CustomerNode
 {
   customer *value;
-  struct customer_node *next;
+  struct CustomerNode *next;
 } customer_node;
 
 typedef struct
@@ -17,13 +17,13 @@ typedef struct
   int size;
 } customer_list;
 
-void initCustomerList(customer_list *list)
+void initCustomerList(customer_list **list)
 {
-  list = malloc(sizeof(customer_list));
+  *list = malloc(sizeof(customer_list));
 
-  list->size = 0;
-  list->head = NULL;
-  list->tail = NULL;
+  (*list)->size = 0;
+  (*list)->head = NULL;
+  (*list)->tail = NULL;
 }
 
 void addCustomer(customer_list *list, customer *data)
@@ -42,6 +42,11 @@ void addCustomer(customer_list *list, customer *data)
     list->tail = newNode;
   }
   list->size = list->size + 1;
+}
+
+void printSize(customer_list *list)
+{
+  printf("%d\n", list->size);
 }
 
 #endif
