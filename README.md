@@ -10,7 +10,11 @@ Ejecutar:
 ```console
 ./main.exe
 ```
-## Requerimientos
+
+## Requisitos Tecnicos
+- OS: Windows 64-bits
+- Compilador utilizado: TDM-GCC (MinGW-w64 based) [Descargar](https://jmeubank.github.io/tdm-gcc/)
+## Requerimientos del Sistema
 
 
 En un restaurante se sirven 7 platillos diferentes y cada uno de ellos se identifica por una clave numérica que toma valores comprendidos entre 1 y 7.
