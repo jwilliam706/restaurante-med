@@ -55,6 +55,9 @@ void saveBillDetails(int bill_id, bill_detail_list *details)
   int successCount = 0;
   while (current != NULL)
   {
+    bill_detail *detail = current->value;
+    snprintf(sql, 200, "INSERT INTO bill_details (bill_id, dish_id, quantity, price) VALUES (%d, %d, %d, %lf);",
+             detail->bill_id, detail->dish_id, detail->quantity, detail->price);
     res = sqlite3_exec(db, sql, NULL, 0, &error);
     if (res != SQLITE_OK)
     {
@@ -124,6 +127,7 @@ void printBill(bill *bill)
     printf("\t\t$%'.2f", current->value->price);
     printf("\t\t\t$%'.2f", current->value->subTotal);
     printf("\n");
+    current = current->next;
   }
 
   printf("-------------------------------------------------------------------------------------\n");

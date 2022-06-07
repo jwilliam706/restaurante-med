@@ -11,13 +11,15 @@
 #include "data/customers.c"
 #include "data/bills.c"
 #include "lib/utils.h"
+#include "lib/bill_sql.h"
 
 int mainMenu()
 {
+  printf("Number of bills: %d\n", loadBills()->size);
+  getchar();
   system("cls");
   int option;
   printf("--------------------------------------------------\n          SISTEMA DE RESTAURANTE\n-------------------------------------------------- \n\n");
-
   printf("Seleccione una opcion: \n\n");
   printf("[1] Leer precios de los platillos\n");
   printf("[2] Generar nueva factura\n");
