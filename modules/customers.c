@@ -237,7 +237,7 @@ void printCustomers(customer_list *list)
   }
   else
   {
-    printf("Lista de clientes vacia...");
+    printf("Lista de clientes vacia...\n");
   }
   system("pause");
 }

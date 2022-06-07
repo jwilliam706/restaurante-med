@@ -24,7 +24,7 @@ bill_detail_list *loadBillDetails(int id)
     exit(0);
   }
 
-  snprintf(sql, 100, "SELECT * FROM bill_details where id = %d;", id);
+  snprintf(sql, 100, "SELECT * FROM bill_details where bill_id = %d;", id);
   res = sqlite3_prepare_v2(db, sql, -1, &stmt, 0);
   if (res != SQLITE_OK)
   {
@@ -74,17 +74,16 @@ void loadBills()
 
   while (sqlite3_step(stmt) == SQLITE_ROW)
   {
-    bill *bill = malloc(sizeof(bill));
-    bill->id = sqlite3_column_int(stmt, 0);
-    bill->number = sqlite3_column_int(stmt, 1);
-    bill->date = sqlite3_column_int(stmt, 2);
-    bill->subtotal = sqlite3_column_double(stmt, 3);
-    bill->iva = sqlite3_column_double(stmt, 4);
-    bill->total = sqlite3_column_double(stmt, 5);
-    bill->customer_id = sqlite3_column_int(stmt, 6);
-    bill->details = loadBillDetails(bill->id);
-    printf("Cantidad de detalles para bill # %d: %d\n", bill->number, bill->details->size);
-    addBill(bills, bill);
+    bill *b = malloc(sizeof(bill));
+    b->id = sqlite3_column_int(stmt, 0);
+    b->number = sqlite3_column_int(stmt, 1);
+    b->date = sqlite3_column_int(stmt, 2);
+    b->subtotal = sqlite3_column_double(stmt, 3);
+    b->iva = sqlite3_column_double(stmt, 4);
+    b->total = sqlite3_column_double(stmt, 5);
+    b->customer_id = sqlite3_column_int(stmt, 6);
+    b->details = loadBillDetails(b->id);
+    addBill(bills, b);
   }
 
   sqlite3_finalize(stmt);

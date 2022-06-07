@@ -90,7 +90,6 @@ bill_detail_list *readBillDetails()
     printf("Ingrese la cantidad: ");
     scanf("%d", &detail->quantity);
 
-    detail->subTotal = detail->price * detail->quantity;
     addBillDetail(details, detail);
     printBillDetail(detail);
     printf("Desea agregar otro platillo?\n");
@@ -119,15 +118,15 @@ void printBill(bill *bill)
 {
   printf("---------------------------------------Factura----------------------------------------\n");
   printf("\nFecha de factura: %s\n", getLocaleCurrentTime(&(bill->date)));
-  printf("\nPlatillo\tCantidad\tPrecio Unitario\t\tSub total");
+  printf("\nPlatillo\tCantidad\tPrecio Unitario\t\tPrecio total");
   printf("\n-------------------------------------------------------------------------------------\n");
   bill_detail_node *current = bill->details->head;
   while (current != NULL)
   {
-    printf("%s", current->value->name);
+    printf("%d", current->value->dish_id);
     printf("\t\t%d", current->value->quantity);
     printf("\t\t$%'.2f", current->value->price);
-    printf("\t\t\t$%'.2f", current->value->subTotal);
+    printf("\t\t\t$%'.2f", current->value->quantity * current->value->price);
     printf("\n");
     current = current->next;
   }
@@ -136,6 +135,25 @@ void printBill(bill *bill)
   printf("\nSubtotal: ------------------------------------------------------------$%'.2f\n\n", bill->subtotal);
   printf("\nIVA: ------------------------------------------------------------$%'.2f\n\n", bill->iva);
   printf("\nTotal a pagar: ------------------------------------------------------------$%'.2f\n\n", bill->total);
+}
+
+void printBills(bill_list *list)
+{
+  bill_node *current = list->head;
+  if (current != NULL)
+  {
+    printf("---Lista de facturas---\n");
+    while (current != NULL)
+    {
+      printBill(current->value);
+      current = current->next;
+    }
+  }
+  else
+  {
+    printf("Lista de facturas vacia...\n");
+  }
+  system("pause");
 }
 
 void createNewBill()

@@ -37,7 +37,7 @@ int main()
   initBillList(&bills);
   loadDishes();
   loadCustomers();
-  //loadBills();
+  loadBills();
   basicConfigurations();
   int menuOption;
   while (menuOption != 4)
