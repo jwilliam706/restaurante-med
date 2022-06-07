@@ -7,8 +7,9 @@
 #include "../lib/bill_list.h"
 #include "../lib/constants.h"
 #include "../database/sqlite3.h"
+#include "../data/bills.c"
 
-bill_detail_list *loadBillDetails(int *id)
+bill_detail_list *loadBillDetails(int id)
 {
   sqlite3 *db;
   char *error = 0;
@@ -47,7 +48,7 @@ bill_detail_list *loadBillDetails(int *id)
   return billDetails;
 }
 
-bill_list *loadBills()
+void loadBills()
 {
   sqlite3 *db;
   char *error = 0;
@@ -71,14 +72,12 @@ bill_list *loadBills()
     exit(0);
   }
 
-  bill_list *bills;
-  initBillList(&bills);
   while (sqlite3_step(stmt) == SQLITE_ROW)
   {
     bill *bill = malloc(sizeof(bill));
     bill->id = sqlite3_column_int(stmt, 0);
     bill->number = sqlite3_column_int(stmt, 1);
-    // bill->date = sqlite3_column_text(stmt, 2);
+    bill->date = sqlite3_column_int(stmt, 2);
     bill->subtotal = sqlite3_column_double(stmt, 3);
     bill->iva = sqlite3_column_double(stmt, 4);
     bill->total = sqlite3_column_double(stmt, 5);
@@ -89,7 +88,6 @@ bill_list *loadBills()
   }
 
   sqlite3_finalize(stmt);
-  return bills;
 }
 
 #endif

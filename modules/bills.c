@@ -8,7 +8,42 @@
 #include "../lib/constants.h"
 #include "../database/sqlite3.h"
 
-int saveBill(bill *newBill, bill_detail_list *details)
+void saveBillDetails(int bill_id, bill_detail_list *details)
+{
+  sqlite3 *db;
+  char *error = 0;
+  int res;
+  char sql[200];
+
+  res = sqlite3_open(DB_FILE, &db);
+  if (res)
+  {
+    printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
+    exit(0);
+  }
+
+  bill_detail_node *current = details->head;
+  int successCount = 0;
+  while (current != NULL)
+  {
+    bill_detail *detail = current->value;
+    snprintf(sql, 200, "INSERT INTO bill_details (bill_id, dish_id, quantity, price) VALUES (%d, %d, %d, %lf);",
+             bill_id, detail->dish_id, detail->quantity, detail->price);
+    res = sqlite3_exec(db, sql, NULL, 0, &error);
+    if (res != SQLITE_OK)
+    {
+      printf("Error: %s\n", error);
+      sqlite3_free(error);
+    }
+    int id = sqlite3_last_insert_rowid(db);
+    printf("last insert rowid: %d\n", id);
+    successCount++;
+    current = current->next;
+  }
+  printf("Registros insertados en factura %d! %d\n", bill_id, successCount);
+}
+
+int saveBill(bill *newBill)
 {
   sqlite3 *db;
   char *error = 0;
@@ -32,43 +67,9 @@ int saveBill(bill *newBill, bill_detail_list *details)
     sqlite3_free(error);
   }
   int id = sqlite3_last_insert_rowid(db);
-  saveBillDetails(id, &details);
+  saveBillDetails(id, newBill->details);
   printf("Registro insertado! bill id: %d\n", id);
   return id;
-}
-
-void saveBillDetails(int bill_id, bill_detail_list *details)
-{
-  sqlite3 *db;
-  char *error = 0;
-  int res;
-  char sql[200];
-
-  res = sqlite3_open(DB_FILE, &db);
-  if (res)
-  {
-    printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
-    exit(0);
-  }
-
-  bill_detail_node *current = details->head;
-  int successCount = 0;
-  while (current != NULL)
-  {
-    bill_detail *detail = current->value;
-    snprintf(sql, 200, "INSERT INTO bill_details (bill_id, dish_id, quantity, price) VALUES (%d, %d, %d, %lf);",
-             detail->bill_id, detail->dish_id, detail->quantity, detail->price);
-    res = sqlite3_exec(db, sql, NULL, 0, &error);
-    if (res != SQLITE_OK)
-    {
-      printf("Error: %s\n", error);
-      sqlite3_free(error);
-    }
-    int id = sqlite3_last_insert_rowid(db);
-    successCount++;
-    current = current->next;
-  }
-  printf("Registros insertados en factura %d! %d\n", bill_id, successCount);
 }
 
 bill_detail_list *readBillDetails()
@@ -82,7 +83,8 @@ bill_detail_list *readBillDetails()
     bill_detail *detail = malloc(sizeof(bill_detail));
     dish *dish = getDish();
 
-    memcpy(&detail->price, &dish->price, sizeof(float));
+    detail->price = dish->price;
+    detail->dish_id = dish->id;
     strcpy(detail->name, dish->name);
 
     printf("Ingrese la cantidad: ");
@@ -148,7 +150,7 @@ void createNewBill()
     newBill.details = readBillDetails();
     calculateBillTotal(newBill.details);
     printBill(&newBill);
-    int billId = saveBill(&newBill, newBill.details);
+    int billId = saveBill(&newBill);
     waitUser();
   }
 }

@@ -15,8 +15,6 @@
 
 int mainMenu()
 {
-  printf("Number of bills: %d\n", loadBills()->size);
-  getchar();
   system("cls");
   int option;
   printf("--------------------------------------------------\n          SISTEMA DE RESTAURANTE\n-------------------------------------------------- \n\n");
@@ -39,6 +37,7 @@ int main()
   initBillList(&bills);
   loadDishes();
   loadCustomers();
+  //loadBills();
   basicConfigurations();
   int menuOption;
   while (menuOption != 4)
