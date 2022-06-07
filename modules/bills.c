@@ -109,10 +109,36 @@ int getNextBillNumber()
   return 1;
 }
 
-void calculateBillTotal(bill_detail_list *details)
+float calculateBillSubTotal(bill_detail_list *details)
 {
-  // TODO: Implementar metodo para calcular el total de la factura
+  //- Head of Bill detail list
+  bill_detail_node *current     = details->head;//- Bill details head set
+  float bill_total_accumulator  = 0.0;//- Bill Total accumulator init
+
+  //- If bill details list is empty
+  if (current != NULL)
+  {
+    while (current != NULL)
+    {
+      bill_total_accumulator += (current->value->quantity*current->value->price);
+      current = current->next;
+    }
+    return bill_total_accumulator;
+  }
+  else
+  {
+    return 0.0; // Bill doesnt have details
+  }
 }
+
+float calculateBillIVA(bill *bill){
+  return bill->subtotal * 0.13;
+}
+
+float calculateBillTotal(bill *bill){
+  return bill->subtotal + bill->iva;
+}
+//- End of calculateBillTotal
 
 void printBill(bill *bill)
 {
@@ -163,12 +189,14 @@ void createNewBill()
   if (customer != NULL)
   {
     newBill.customer_id = customer->id;
-    newBill.number = getNextBillNumber();
-    newBill.date = getCurrentTime();
-    newBill.details = readBillDetails();
-    calculateBillTotal(newBill.details);
+    newBill.number      = getNextBillNumber();
+    newBill.date        = getCurrentTime();
+    newBill.details     = readBillDetails();
+    newBill.subtotal    = calculateBillSubTotal(newBill.details);
+    newBill.iva         = calculateBillIVA(&newBill);
+    newBill.total       = calculateBillTotal(&newBill);
     printBill(&newBill);
-    int billId = saveBill(&newBill);
+    int billId          = saveBill(&newBill);
     waitUser();
   }
 }
