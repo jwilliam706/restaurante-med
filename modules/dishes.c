@@ -8,35 +8,6 @@
 #include "../lib/constants.h"
 #include "../database/sqlite3.h"
 
-dish readDish(int id)
-{
-    dish newDish;
-    printf("Ingrese el nombre del platillo %d: ", id);
-    readString(newDish.name, 20);
-    printf("Ingrese el precio del platillo %d: ", id);
-    scanf("%f", &newDish.price);
-    getchar();
-    newDish.id = id;
-    return newDish;
-}
-
-void readDishes()
-{
-    for (int i = 0; i < 7; i++)
-    {
-        dishes[i] = readDish(i+1);
-    }
-    saveDishes();
-}
-
-void printDishes()
-{
-    for (int i = 0; i < 7; i++)
-    {
-        printf("\n%d - %s - $%.2f", dishes[i].id, dishes[i].name, dishes[i].price);
-    }
-}
-
 void saveDish(dish *newDish)
 {
   sqlite3 *db;
@@ -73,6 +44,35 @@ void saveDishes()
   }
 }
 
+dish readDish(int id)
+{
+    dish newDish;
+    printf("Ingrese el nombre del platillo %d: ", id);
+    readString(newDish.name, 20);
+    printf("Ingrese el precio del platillo %d: ", id);
+    scanf("%f", &newDish.price);
+    getchar();
+    newDish.id = id;
+    return newDish;
+}
+
+void readDishes()
+{
+    for (int i = 0; i < 7; i++)
+    {
+        dishes[i] = readDish(i+1);
+    }
+    saveDishes();
+}
+
+void printDishes()
+{
+    for (int i = 0; i < 7; i++)
+    {
+        printf("\n%d - %s - $%.2f", dishes[i].id, dishes[i].name, dishes[i].price);
+    }
+}
+
 void loadDishes(){
   sqlite3 *db;
   char *error = 0;
@@ -85,10 +85,6 @@ void loadDishes(){
      {
        printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
        exit(0);
-     }
-   else
-     {
-       printf("Base de datos OK\n");
      }
 
   sql = "SELECT * FROM dishes;";

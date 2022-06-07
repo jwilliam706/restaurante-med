@@ -10,6 +10,7 @@
 #include "models/dish.h"
 #include "data/customer.c"
 #include "lib/utils.h"
+#include "data/customer.c"
 
 int mainMenu()
 {
@@ -31,9 +32,10 @@ int mainMenu()
 
 int main()
 {
-  createTestCustomers();
   // createTables();
+  initCustomerList(&customers);
   loadDishes();
+  loadCustomers();
   basicConfigurations();
   int menuOption;
   while (menuOption != 4)
