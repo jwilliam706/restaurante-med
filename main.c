@@ -4,12 +4,12 @@
 #include <string.h>
 #include <ctype.h>
 #include <locale.h>
-#include "modules/stats.c"
 #include "modules/bills.c"
 #include "modules/dishes.c"
 #include "models/dish.h"
 #include "data/customers.c"
 #include "data/bills.c"
+#include "modules/stats.c"
 #include "lib/utils.h"
 #include "lib/bill_sql.h"
 
