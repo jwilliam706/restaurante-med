@@ -8,16 +8,16 @@
 #include "modules/bills.c"
 #include "modules/dishes.c"
 #include "models/dish.h"
-#include "data/customer.c"
+#include "data/customers.c"
+#include "data/bills.c"
 #include "lib/utils.h"
-#include "data/customer.c"
+#include "lib/bill_sql.h"
 
 int mainMenu()
 {
   system("cls");
   int option;
   printf("--------------------------------------------------\n          SISTEMA DE RESTAURANTE\n-------------------------------------------------- \n\n");
-
   printf("Seleccione una opcion: \n\n");
   printf("[1] Leer precios de los platillos\n");
   printf("[2] Generar nueva factura\n");
@@ -34,8 +34,10 @@ int main()
 {
   // createTables();
   initCustomerList(&customers);
+  initBillList(&bills);
   loadDishes();
   loadCustomers();
+  loadBills();
   basicConfigurations();
   int menuOption;
   while (menuOption != 4)
