@@ -37,6 +37,7 @@ void saveBillDetails(int bill_id, bill_detail_list *details)
       sqlite3_free(error);
     }
     int id = sqlite3_last_insert_rowid(db);
+    detail->id = id;
     printf("last insert rowid: %d\n", id);
     successCount++;
     current = current->next;
@@ -68,8 +69,10 @@ int saveBill(bill *newBill)
     sqlite3_free(error);
   }
   int id = sqlite3_last_insert_rowid(db);
+  newBill->id = id;
   saveBillDetails(id, newBill->details);
   printf("Registro insertado! bill id: %d\n", id);
+
   return id;
 }
 
@@ -187,20 +190,20 @@ void printBills(bill_list *list)
 
 void createNewBill()
 {
-  bill newBill;
+  bill *newBill = malloc(sizeof(bill));
   customer *customer = getCustomer();
   if (customer != NULL)
   {
-    newBill.customer_id = customer->id;
-    newBill.number = getNextBillNumber();
-    newBill.date = getCurrentTime();
-    newBill.details = readBillDetails();
-    newBill.subtotal = calculateBillSubTotal(newBill.details);
-    newBill.iva = calculateBillIVA(&newBill);
-    newBill.total = calculateBillTotal(&newBill);
-    printBill(&newBill);
-    int billId = saveBill(&newBill);
-    loadBills();
+    newBill->customer_id = customer->id;
+    newBill->number = getNextBillNumber();
+    newBill->date = getCurrentTime();
+    newBill->details = readBillDetails();
+    newBill->subtotal = calculateBillSubTotal(newBill->details);
+    newBill->iva = calculateBillIVA(newBill);
+    newBill->total = calculateBillTotal(newBill);
+    newBill->id = saveBill(newBill);
+    printBill(newBill);
+    addBill(bills, newBill);
     waitUser();
   }
 }

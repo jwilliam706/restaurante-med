@@ -72,18 +72,6 @@ void loadBills()
     exit(0);
   }
 
-  bill_node *current = bills->head;
-  bill_node *next;
-
-  while (current != NULL)
-  {
-    next = current->next;
-    free(current);
-    current = next;
-  }
-
-  bills->head = NULL;
-
   while (sqlite3_step(stmt) == SQLITE_ROW)
   {
     bill *b = malloc(sizeof(bill));
