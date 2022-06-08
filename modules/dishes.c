@@ -2,7 +2,7 @@
 #define DISHES_H
 #include <stdio.h>
 #include <stdlib.h>
-#include "../data/dish.c"
+#include "../data/dishes.c"
 #include "../models/dish.h"
 #include "../lib/utils.h"
 #include "../lib/constants.h"
@@ -111,6 +111,15 @@ void loadDishes(){
   }
 
   sqlite3_finalize(stmt);
+}
+
+dish *getDish()
+{
+  int selectedDish;
+  printDishes();
+  printf("\nSeleccione el platillo: ");
+  scanf("%d", &selectedDish);
+  return &dishes[selectedDish - 1];
 }
 
 #endif

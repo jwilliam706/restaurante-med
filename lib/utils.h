@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
+#include <time.h>
 #include <windows.h>
 
 void clearBuffer(char *line)
@@ -48,14 +49,14 @@ void basicConfigurations()
 
 time_t getCurrentTime()
 {
-  time_t rawTime;
-  return time(&rawTime);
+  time_t rawTime = time(NULL);
+  return rawTime;
 }
 
 char *getLocaleCurrentTime(time_t *rawTime)
 {
   struct tm *timeinfo;
-  timeinfo = localtime(&rawTime);
+  timeinfo = localtime(rawTime);
   return asctime(timeinfo);
 }
 
