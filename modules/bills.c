@@ -4,6 +4,7 @@
 #include "customers.c"
 #include "../models/bill.h"
 #include "../lib/utils.h"
+#include "../lib/bill_sql.h"
 #include "../lib/bill_list.h"
 #include "../lib/constants.h"
 #include "../database/sqlite3.h"
@@ -36,6 +37,7 @@ void saveBillDetails(int bill_id, bill_detail_list *details)
       sqlite3_free(error);
     }
     int id = sqlite3_last_insert_rowid(db);
+    detail->id = id;
     printf("last insert rowid: %d\n", id);
     successCount++;
     current = current->next;
@@ -67,8 +69,10 @@ int saveBill(bill *newBill)
     sqlite3_free(error);
   }
   int id = sqlite3_last_insert_rowid(db);
+  newBill->id = id;
   saveBillDetails(id, newBill->details);
   printf("Registro insertado! bill id: %d\n", id);
+
   return id;
 }
 
@@ -112,15 +116,15 @@ int getNextBillNumber()
 float calculateBillSubTotal(bill_detail_list *details)
 {
   //- Head of Bill detail list
-  bill_detail_node *current     = details->head;//- Bill details head set
-  float bill_total_accumulator  = 0.0;//- Bill Total accumulator init
+  bill_detail_node *current = details->head; //- Bill details head set
+  float bill_total_accumulator = 0.0;        //- Bill Total accumulator init
 
   //- If bill details list is empty
   if (current != NULL)
   {
     while (current != NULL)
     {
-      bill_total_accumulator += (current->value->quantity*current->value->price);
+      bill_total_accumulator += (current->value->quantity * current->value->price);
       current = current->next;
     }
     return bill_total_accumulator;
@@ -131,11 +135,13 @@ float calculateBillSubTotal(bill_detail_list *details)
   }
 }
 
-float calculateBillIVA(bill *bill){
+float calculateBillIVA(bill *bill)
+{
   return bill->subtotal * 0.13;
 }
 
-float calculateBillTotal(bill *bill){
+float calculateBillTotal(bill *bill)
+{
   return bill->subtotal + bill->iva;
 }
 //- End of calculateBillTotal
@@ -143,7 +149,7 @@ float calculateBillTotal(bill *bill){
 void printBill(bill *bill)
 {
   printf("---------------------------------------Factura----------------------------------------\n");
-  printf("\nFecha de factura: %s\n", getLocaleCurrentTime(&(bill->date)));
+  printf("\nFecha de factura: %s\n", getLocaleCurrentTimeFor(&(bill->date)));
   printf("\nPlatillo\tCantidad\tPrecio Unitario\t\tPrecio total");
   printf("\n-------------------------------------------------------------------------------------\n");
   bill_detail_node *current = bill->details->head;
@@ -184,19 +190,20 @@ void printBills(bill_list *list)
 
 void createNewBill()
 {
-  bill newBill;
+  bill *newBill = malloc(sizeof(bill));
   customer *customer = getCustomer();
   if (customer != NULL)
   {
-    newBill.customer_id = customer->id;
-    newBill.number      = getNextBillNumber();
-    newBill.date        = getCurrentTime();
-    newBill.details     = readBillDetails();
-    newBill.subtotal    = calculateBillSubTotal(newBill.details);
-    newBill.iva         = calculateBillIVA(&newBill);
-    newBill.total       = calculateBillTotal(&newBill);
-    printBill(&newBill);
-    int billId          = saveBill(&newBill);
+    newBill->customer_id = customer->id;
+    newBill->number = getNextBillNumber();
+    newBill->date = getCurrentTime();
+    newBill->details = readBillDetails();
+    newBill->subtotal = calculateBillSubTotal(newBill->details);
+    newBill->iva = calculateBillIVA(newBill);
+    newBill->total = calculateBillTotal(newBill);
+    newBill->id = saveBill(newBill);
+    printBill(newBill);
+    addBill(bills, newBill);
     waitUser();
   }
 }

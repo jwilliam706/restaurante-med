@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "./totalSales.h"
 
 int statsMenu()
 {
@@ -275,26 +276,27 @@ void stats()
       switch (statsOption)
       {
       case 1:
-        // Ventas totales del dia
+        calculateTotalSalesForToday();
+        waitUser();
         break;
       case 2:
         // Promedio de consumo por cliente
         break;
       case 3:
         // Platillo favorito
-        getFavoriteDish(bills,dishes);
+        getFavoriteDish(bills, dishes);
         break;
       case 4:
         // Platillo mas consumido
-        getMostConsumedDish(bills,dishes);
+        getMostConsumedDish(bills, dishes);
         break;
       case 5:
         // Platillo mas rentable
-        getDishMoreMoneyMakes(bills,dishes);
+        getDishMoreMoneyMakes(bills, dishes);
         break;
       case 6:
         // Platillo menos rentable
-        getDishLessMoneyMakes(bills,dishes);
+        getDishLessMoneyMakes(bills, dishes);
         break;
       default:
         printf("Opcion no valida\n");

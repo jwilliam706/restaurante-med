@@ -9,49 +9,49 @@
 
 void saveCustomer(customer *newCustomer)
 {
-	sqlite3 *db;
+  sqlite3 *db;
   char *error = 0;
   int res;
   char sql[200];
 
-   res = sqlite3_open(DB_FILE, &db);
-   if (res)
-     {
-       printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
-       exit(0);
-     }
+  res = sqlite3_open(DB_FILE, &db);
+  if (res)
+  {
+    printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
+    exit(0);
+  }
 
   snprintf(sql, 200, "INSERT INTO customers (name, phone, email, address) VALUES ('%s', '%s', '%s', '%s');",
-  newCustomer->name, newCustomer->phone, newCustomer->email, newCustomer->address);
+           newCustomer->name, newCustomer->phone, newCustomer->email, newCustomer->address);
 
   res = sqlite3_exec(db, sql, NULL, 0, &error);
-   if (res != SQLITE_OK)
-   {
-      printf("Error: %s\n", error);
-      sqlite3_free(error);
-   }
-   else
-   {
-      printf("\n>>DATOS ALMACENADOS CORRECTAMENTE<<");
-   }
+  if (res != SQLITE_OK)
+  {
+    printf("Error: %s\n", error);
+    sqlite3_free(error);
+  }
+  else
+  {
+    printf("\n>>DATOS ALMACENADOS CORRECTAMENTE<<");
+  }
 }
 
 customer *createNewCustomer()
 {
-	system("cls");
-	customer *newCustomer = malloc(sizeof(customer));
-	printf("Ingreso de nuevo cliente\n");
+  system("cls");
+  customer *newCustomer = malloc(sizeof(customer));
+  printf("Ingreso de nuevo cliente\n");
   newCustomer->id = 0;
-	printf("Nombre: ");
-	scanf(" %[^\n]", &newCustomer->name);
-	printf("Telefono: ");
-	scanf("%s", &newCustomer->phone);
-	printf("Email: ");
-	scanf(" %[^\n]", &newCustomer->email);
-	printf("Direccion: ");
-	scanf(" %[^\n]", &newCustomer->address);
-	saveCustomer(newCustomer);
-	return newCustomer;
+  printf("Nombre: ");
+  scanf(" %[^\n]", &newCustomer->name);
+  printf("Telefono: ");
+  scanf("%s", &newCustomer->phone);
+  printf("Email: ");
+  scanf(" %[^\n]", &newCustomer->email);
+  printf("Direccion: ");
+  scanf(" %[^\n]", &newCustomer->address);
+  saveCustomer(newCustomer);
+  return newCustomer;
 }
 
 // Copy customer?
@@ -129,88 +129,87 @@ customer *searchCustomerByName()
 
 customer *searchCustomer()
 {
-	int option;
-	customer *customer;
-	system("cls");
-	if (customers->head == NULL)
-	{
-		printf("La lista esta vacia");
-		return NULL;
-	}
-	printf("mmm");
-	while (option != 3)
-	{
-		printf("Buscar cliente\n");
-		printf("=====================================\n");
-		printf("1. Buscar por id\n");
-		printf("2. Buscar por nombre\n\n");
-		printf("3. Cancelar\n");
-		printf("=====================================\n");
-		printf("Opcion: ");
-		scanf("%d", &option);
-		getchar();
-		switch (option)
-		{
-		case 1:
-			customer = searchCustomerById();
-			if (customer != NULL)
-			{
-				return customer;
-			}
-			break;
-		case 2:
-			customer = searchCustomerByName();
-			if (customer != NULL)
-			{
-				return customer;
-			}
-			break;
-		case 3:
-			return NULL;
-		default:
-			break;
-		}
-	}
-	return NULL;
+  int option;
+  customer *customer;
+  system("cls");
+  if (customers->head == NULL)
+  {
+    printf("La lista esta vacia");
+    return NULL;
+  }
+  while (option != 3)
+  {
+    printf("Buscar cliente\n");
+    printf("=====================================\n");
+    printf("1. Buscar por id\n");
+    printf("2. Buscar por nombre\n\n");
+    printf("3. Cancelar\n");
+    printf("=====================================\n");
+    printf("Opcion: ");
+    scanf("%d", &option);
+    getchar();
+    switch (option)
+    {
+    case 1:
+      customer = searchCustomerById();
+      if (customer != NULL)
+      {
+        return customer;
+      }
+      break;
+    case 2:
+      customer = searchCustomerByName();
+      if (customer != NULL)
+      {
+        return customer;
+      }
+      break;
+    case 3:
+      return NULL;
+    default:
+      break;
+    }
+  }
+  return NULL;
 }
 
 customer *getCustomer()
 {
-	int option = 0;
-	customer *customer;
+  int option = 0;
+  customer *customer;
 
-	while (option != 3)
-	{
-		printf("Ingrese un cliente\n");
-		printf("=====================================\n");
-		printf("1. Nuevo cliente\n");
-		printf("2. Existente\n\n");
-		printf("3. Cancelar\n");
-		printf("=====================================\n");
-		printf("Opcion: ");
-		scanf("%d", &option);
-		getchar();
-		switch (option)
-		{
-		case 1:
-			customer = createNewCustomer();
-			if (customer != NULL)
-			{
-				return customer;
-			}
-		case 2:
-			customer = searchCustomer();
-			if (customer != NULL)
-			{
-				return customer;
-			}
-		case 3:
-			return NULL;
-		default:
-			break;
-		}
-	}
-	return NULL;
+  while (option != 3)
+  {
+    printf("Ingrese un cliente\n");
+    printf("=====================================\n");
+    printf("1. Nuevo cliente\n");
+    printf("2. Existente\n\n");
+    printf("3. Cancelar\n");
+    printf("=====================================\n");
+    printf("Opcion: ");
+    scanf("%d", &option);
+    getchar();
+    switch (option)
+    {
+    case 1:
+      customer = createNewCustomer();
+      if (customer != NULL)
+      {
+        return customer;
+      }
+    case 2:
+      customer = searchCustomer();
+      if (customer != NULL)
+      {
+        return customer;
+      }
+    case 3:
+      return NULL;
+    default:
+      break;
+    }
+  }
+  return NULL;
 }
 
 void printCustomer(customer *customer)
@@ -242,19 +241,20 @@ void printCustomers(customer_list *list)
   system("pause");
 }
 
-void loadCustomers(){
+void loadCustomers()
+{
   sqlite3 *db;
   char *error = 0;
   int res;
   char *sql;
   sqlite3_stmt *stmt;
 
-   res = sqlite3_open(DB_FILE, &db);
-   if (res)
-     {
-       printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
-       exit(0);
-     }
+  res = sqlite3_open(DB_FILE, &db);
+  if (res)
+  {
+    printf("No se pudo abrir la base de datos: %s\n", sqlite3_errmsg(db));
+    exit(0);
+  }
 
   sql = "SELECT * FROM customers;";
 
