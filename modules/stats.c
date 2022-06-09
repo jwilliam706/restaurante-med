@@ -207,6 +207,30 @@ void getDishMoreMoneyMakes(bill_list *list, dish *dishes){
   system("pause");
 }
 
+// Function to retreive average total by ID 
+void getAveragePerCustomer(){
+ /* bill *billsCustomer = malloc(sizeof(bill));
+      int id = 0;
+      float totalSum = 0;
+      int counter = 0;
+      int validation = 0;
+      float average = 0;*/
+      printf("Favor ingresar el ID del cliente a buscar: ");
+     /* scanf("%d", &id);
+      while (billsCustomer!= NULL)
+      {
+         if (billsCustomer->customer_id == id)
+         {
+           totalSum = totalSum + billsCustomer->total;
+           counter = counter + 1;
+         }
+      }
+      average = totalSum/counter;
+
+      system("cls");
+      printf("\nEl promedio de consumo del cliente con ID '%d' es: '%f'", id,average);*/
+}
+
 void getDishLessMoneyMakes(bill_list *list, dish *dishes){
   //- Local Variables
   int favorite_dish_position  = 0;
@@ -280,7 +304,7 @@ void stats()
         waitUser();
         break;
       case 2:
-        // Promedio de consumo por cliente
+        getAveragePerCustomer();
         break;
       case 3:
         // Platillo favorito
