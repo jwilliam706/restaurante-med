@@ -8,6 +8,7 @@
 #include "../lib/bill_list.h"
 #include "../lib/constants.h"
 #include "../database/sqlite3.h"
+#include "totalSales.h"
 
 void saveBillDetails(int bill_id, bill_detail_list *details)
 {
