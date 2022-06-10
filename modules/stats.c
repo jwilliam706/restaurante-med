@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "./totalSales.h"
+#include "../models/customer.h"
 
 int statsMenu()
 {
@@ -207,6 +208,39 @@ void getDishMoreMoneyMakes(bill_list *list, dish *dishes){
   system("pause");
 }
 
+// Function to retreive average total by ID 
+void getAveragePerCustomer(bill_list *list){
+      bill_node *billCustomer = list->head;
+      customer *idcustomer = searchCustomer();
+      int id = 0;
+      float totalSum = 0;
+      int counter = 0;
+      int validation = 0;
+      float average = 0;
+      if (idcustomer != NULL)
+      {
+        id = idcustomer->id;
+          while(billCustomer != NULL){
+          bill *billData = billCustomer->value;
+            if(billData->customer_id == id){
+              totalSum = totalSum + billData->total;
+              counter = counter +1;
+              }
+        billCustomer = billCustomer->next;
+      }
+      average = totalSum/counter;
+      printf("\nTotal %f", totalSum);
+      printf("\nCounter %d", counter);
+      printf("\nEl promedio de consumo del cliente con ID '%d' es: '%f'", id,average);
+      }
+      else{
+        printf("ID no encotrado.");
+      }
+      
+      
+      system("pause");
+}
+
 void getDishLessMoneyMakes(bill_list *list, dish *dishes){
   //- Local Variables
   int favorite_dish_position  = 0;
@@ -280,7 +314,7 @@ void stats()
         waitUser();
         break;
       case 2:
-        // Promedio de consumo por cliente
+        getAveragePerCustomer(bills);
         break;
       case 3:
         // Platillo favorito
