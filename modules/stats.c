@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "./totalSales.h"
+#include "customers.c"
 
 int statsMenu()
 {
@@ -210,12 +211,13 @@ void getDishMoreMoneyMakes(bill_list *list, dish *dishes){
 // Function to retreive average total by ID 
 void getAveragePerCustomer(bill_list *list){
       bill_node *billCustomer = list->head;
+      customer *idcustomer = searchCustomer();
       int id = 0;
       float totalSum = 0;
       int counter = 0;
       int validation = 0;
       float average = 0;
-      id = searchCustomer();
+      id = idcustomer->id;
       while(billCustomer != NULL){
         bill *billData = billCustomer->value;
         if(billData->customer_id == id){
@@ -304,7 +306,7 @@ void stats()
         waitUser();
         break;
       case 2:
-        getAveragePerCustomer();
+        getAveragePerCustomer(bills);
         break;
       case 3:
         // Platillo favorito
