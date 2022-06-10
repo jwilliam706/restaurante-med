@@ -108,9 +108,22 @@ bill_detail_list *readBillDetails()
 
 int getNextBillNumber()
 {
-  // TODO: Implementar metodo para retornar el siguiente numero de factura
-  // Tomar en cuenta que las facturas se numeran de 1 a N para cada dia
-  return 1;
+  bill_node *current = bills->head;
+  time_t currentTime = getCurrentTime();
+  int max = 0;
+  while (current != NULL)
+  {
+    if (current->value->date > getStartOfTodayTime())
+    {
+      if (current->value->number > max)
+      {
+        max = current->value->number;
+      }
+    }
+
+    current = current->next;
+  }
+  return max + 1;
 }
 
 float calculateBillSubTotal(bill_detail_list *details)
