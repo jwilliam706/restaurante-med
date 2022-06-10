@@ -86,6 +86,98 @@ customer *searchCustomerById()
   return NULL;
 }
 
+//--
+void print_custormers_by_name_search(customer_list *list){
+  //- Customer list head
+  customer_node *current = list->head;
+  
+  //- Customer empty validation
+  if (current != NULL)
+  {
+    //- Customer List While
+    while (current != NULL)
+    {
+      printf("\n-----------------------------------------------------------------------");
+      printf("\nID: %d",current->value->id);
+      printf("\nNombre: %s",current->value->name);
+      printf("\nEmail: %s",current->value->email);
+      printf("\nDireccion: %s",current->value->address);
+      printf("\nTelefono: %s",current->value->phone);
+      current = current->next;
+    }
+    printf("\n-----------------------------------------------------------------------\n");
+  }
+}
+
+//- 
+customer *get_customer_by_id(customer_list *list, int id){
+  customer_node *current = list->head;
+  while (current != NULL)
+  {
+    if (current->value->id == id)
+    {
+      return current->value;
+    }
+    current = current->next;
+  }
+  printf("Hubo un error");
+  return NULL;
+}
+
+//--
+customer *search_customers_by_name(){
+  system("cls");
+  char name[50];
+  int id;
+  customer_node *current = customers->head;
+  customer_list *foundResults = malloc(sizeof(customer_list));
+  printf("Digite el nombre del cliente a buscar: ");
+  readString(name, 50);
+
+  //- Customers List search
+  while (current != NULL)
+  {
+    if (strcmp(current->value->name, name) == 0)
+    {
+      //- New Costumer
+      customer *newCustomer = createCustomer(current->value);
+
+      //- Add Section
+      customer_node *newNode = malloc(sizeof(customer_node));
+      newNode->value = newCustomer;
+      newNode->next = NULL;
+      if (foundResults->head == NULL)
+      {
+        foundResults->head = newNode;
+        foundResults->tail = newNode;
+      }
+      else
+      {
+        foundResults->tail->next = newNode;
+        foundResults->tail = newNode;
+      }
+      foundResults->size = foundResults->size + 1;
+      //-
+    }
+    current = current->next;
+  }
+
+  //-
+  printf("Se encontraron %d resultados.\n",foundResults->size);
+
+  //-
+  print_custormers_by_name_search(foundResults);
+  //-
+  printf("\nDigite el id de cliente a utilizar:");
+  scanf("%d", &id);
+  getchar();
+  //-
+  return  get_customer_by_id(foundResults,id);
+}
+
+
+//--
+
 customer *searchCustomerByName()
 {
   char name[50];
@@ -100,9 +192,10 @@ customer *searchCustomerByName()
       customer *newCustomer = createCustomer(current->value);
       addCustomer(foundResults, newCustomer);
     }
-    printf("a %d", &foundResults->size);
+    
+    //printf("a %d", &foundResults->size);
     current = current->next;
-    printf("b");
+    //printf("b");
   }
   printf("\nClientes con nombre '%s' encontrados: %d\n", name, foundResults->size);
   if (foundResults->size == 1)
@@ -158,7 +251,7 @@ customer *searchCustomer()
       }
       break;
     case 2:
-      customer = searchCustomerByName();
+      customer = search_customers_by_name();
       if (customer != NULL)
       {
         return customer;
