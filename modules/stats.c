@@ -208,27 +208,27 @@ void getDishMoreMoneyMakes(bill_list *list, dish *dishes){
 }
 
 // Function to retreive average total by ID 
-void getAveragePerCustomer(){
- /* bill *billsCustomer = malloc(sizeof(bill));
+void getAveragePerCustomer(bill_list *list){
+      bill_node *billCustomer = list->head;
       int id = 0;
       float totalSum = 0;
       int counter = 0;
       int validation = 0;
-      float average = 0;*/
-      printf("Favor ingresar el ID del cliente a buscar: ");
-     /* scanf("%d", &id);
-      while (billsCustomer!= NULL)
-      {
-         if (billsCustomer->customer_id == id)
-         {
-           totalSum = totalSum + billsCustomer->total;
-           counter = counter + 1;
-         }
+      float average = 0;
+      id = searchCustomer();
+      while(billCustomer != NULL){
+        bill *billData = billCustomer->value;
+        if(billData->customer_id == id){
+        totalSum = totalSum + billData->total;
+        counter = counter +1;
+        }
+        billCustomer = billCustomer->next;
       }
       average = totalSum/counter;
-
-      system("cls");
-      printf("\nEl promedio de consumo del cliente con ID '%d' es: '%f'", id,average);*/
+      printf("\nTotal %f", totalSum);
+      printf("\nCounter %d", counter);
+      printf("\nEl promedio de consumo del cliente con ID '%d' es: '%f'", id,average);
+      system("pause");
 }
 
 void getDishLessMoneyMakes(bill_list *list, dish *dishes){
