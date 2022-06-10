@@ -23,18 +23,28 @@ void calculateTotalSalesForTimeSpan(int since)
   printf("Ventas totales: $%.2f\n", sumTotal);
 }
 
+time_t elapsedTimeToday()
+{
+  time_t offset = timeOffset();
+  time_t currentTime = getCurrentTime() + offset;
+  int secondsInDay = 24 * 60 * 60;
+  return currentTime % secondsInDay;
+}
+
+time_t getStartOfTodayTime()
+{
+  time_t currentTime = getCurrentTime();
+  time_t timeToday = elapsedTimeToday();
+  return currentTime - timeToday;
+}
+
 void calculateTotalSalesForToday()
 {
-  int offset = timeOffset();
   time_t currentTime = getCurrentTime();
   printf("\nHora actual: %s \n", getLocaleCurrentTimeFor(&currentTime));
-
-  time_t localTime = offset + currentTime;
-  int secondsInDay = 24 * 60 * 60;
-  time_t elapsedTimeToday = localTime % secondsInDay;
-  time_t sincegmt = currentTime - elapsedTimeToday;
-  printf("Total de ordenes desde: %s\n", getLocaleCurrentTimeFor(&sincegmt));
-  calculateTotalSalesForTimeSpan(localTime - elapsedTimeToday);
+  time_t since = getStartOfTodayTime();
+  printf("Total de ordenes desde: %s\n", getLocaleCurrentTimeFor(&since));
+  calculateTotalSalesForTimeSpan(since);
 }
 
 #endif
