@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "./totalSales.h"
-#include "customers.c"
+#include "../models/customer.h"
 
 int statsMenu()
 {
@@ -217,19 +217,27 @@ void getAveragePerCustomer(bill_list *list){
       int counter = 0;
       int validation = 0;
       float average = 0;
-      id = idcustomer->id;
-      while(billCustomer != NULL){
-        bill *billData = billCustomer->value;
-        if(billData->customer_id == id){
-        totalSum = totalSum + billData->total;
-        counter = counter +1;
-        }
+      if (idcustomer != NULL)
+      {
+        id = idcustomer->id;
+          while(billCustomer != NULL){
+          bill *billData = billCustomer->value;
+            if(billData->customer_id == id){
+              totalSum = totalSum + billData->total;
+              counter = counter +1;
+              }
         billCustomer = billCustomer->next;
       }
       average = totalSum/counter;
       printf("\nTotal %f", totalSum);
       printf("\nCounter %d", counter);
       printf("\nEl promedio de consumo del cliente con ID '%d' es: '%f'", id,average);
+      }
+      else{
+        printf("ID no encotrado.");
+      }
+      
+      
       system("pause");
 }
 
