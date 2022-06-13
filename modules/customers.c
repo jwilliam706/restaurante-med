@@ -66,26 +66,9 @@ customer *createCustomer(customer *from)
   return newCustomer;
 }
 
-customer *searchCustomerById()
-{
-  int id;
-  int found = 0;
-  customer_node *current = customers->head;
-  printf("Digite el codigo de cliente a buscar: ");
-  scanf("%d", &id);
-  getchar();
-  while (current != NULL)
-  {
-    if (current->value->id == id)
-    {
-      return current->value;
-    }
-    current = current->next;
-  }
-  printf("\nCliente con codigo '%d' no encontrado...\n\n", id);
-  return NULL;
-}
 
+
+//-- SEARCH FUNCTIONS SECTION
 //--
 void print_custormers_by_name_search(customer_list *list){
   //- Customer list head
@@ -110,7 +93,7 @@ void print_custormers_by_name_search(customer_list *list){
 }
 
 //- 
-customer *get_customer_by_id(customer_list *list, int id){
+customer *get_customer_by_id(customer_list *list, int id, char error_message[]){
   customer_node *current = list->head;
   while (current != NULL)
   {
@@ -120,7 +103,11 @@ customer *get_customer_by_id(customer_list *list, int id){
     }
     current = current->next;
   }
-  printf("Hubo un error");
+  
+  clear_console_and_change_color(ERROR_COLOR);
+  printf(error_message);
+  system("pause");
+  clear_console_and_change_color(BASE_COLOR);
   return NULL;
 }
 
@@ -172,62 +159,37 @@ customer *search_customers_by_name(){
   scanf("%d", &id);
   getchar();
   //-
-  return  get_customer_by_id(foundResults,id);
+  return  get_customer_by_id(foundResults,id,"Hubo un error!");
 }
-
 
 //--
-
-customer *searchCustomerByName()
+customer *search_customer_by_id()
 {
-  char name[50];
-  customer_node *current = customers->head;
-  customer_list *foundResults = malloc(sizeof(customer_list));
-  printf("Digite el nombre del cliente a buscar: ");
-  readString(name, 50);
-  while (current != NULL)
-  {
-    if (strcmp(current->value->name, name) == 0)
-    {
-      customer *newCustomer = createCustomer(current->value);
-      addCustomer(foundResults, newCustomer);
-    }
-    
-    //printf("a %d", &foundResults->size);
-    current = current->next;
-    //printf("b");
-  }
-  printf("\nClientes con nombre '%s' encontrados: %d\n", name, foundResults->size);
-  if (foundResults->size == 1)
-  {
-    return foundResults->head->value;
-  }
-  else if (foundResults->size > 1)
-  {
-    printf("----------\n");
-    printf(customers->head->value->name);
-    printf("\n");
-    printf(foundResults->head->value->name);
-    printf("----------\n");
-    printf("\nSe encontraron mas de un cliente con el nombre '%s'\n", name);
-    printf("N de clientes encontrados: %d\n", foundResults->size);
-    // printCustomers(foundResults);
-  }
-  else
-  {
-    printf("\n Cliente con nombre '%s' no encontrado\n\n", name);
-  }
-  return NULL;
+  int id;
+  printf("Digite el codigo de cliente a buscar: ");
+  scanf("%d", &id);
+  getchar();
+  return get_customer_by_id(customers,id,"Cliente no encontrado");
 }
+
+//--
+//-- END OF SEARCH FUNCTIONS SECTION
+//--
 
 customer *searchCustomer()
 {
   int option;
   customer *customer;
   system("cls");
+  
   if (customers->head == NULL)
   {
-    printf("La lista esta vacia");
+    
+    clear_console_and_change_color(ERROR_COLOR);
+    printf("\nLa lista esta vacia\n");
+    system("pause");
+    clear_console_and_change_color(BASE_COLOR);
+
     return NULL;
   }
   while (option != 3)
@@ -244,7 +206,7 @@ customer *searchCustomer()
     switch (option)
     {
     case 1:
-      customer = searchCustomerById();
+      customer = search_customer_by_id();
       if (customer != NULL)
       {
         return customer;
