@@ -57,7 +57,7 @@ void readDishes()
   {
     dish *d = &dishes[i];
     int id = d->id;
-    if (id != NULL)
+    if (id != 0)
     {
       lastId = d->id;
       savedDishes += 1;
