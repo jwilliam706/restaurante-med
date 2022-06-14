@@ -9,6 +9,7 @@
 #include "models/dish.h"
 #include "data/customers.c"
 #include "data/bills.c"
+#include "data/dishes.c"
 #include "modules/stats.c"
 #include "lib/utils.h"
 #include "lib/bill_sql.h"
@@ -35,6 +36,7 @@ int main()
   // createTables();
   initCustomerList(&customers);
   initBillList(&bills);
+  initDishes();
   loadDishes();
   loadCustomers();
   loadBills();

@@ -4,4 +4,12 @@
 
 dish dishes[7];
 
+void initDishes()
+{
+for (int i = 0; i < 7; i++)
+{
+  dishes[i].id = -1;
+}
+}
+
 #endif
