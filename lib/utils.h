@@ -88,4 +88,17 @@ int timeOffset()
   return (int)difftime(rawtime, gmt);
 }
 
+char *lowerCaseString(char *str)
+{
+  int len = strlen(str);
+  char *result = malloc(len + 1);
+  strcpy(result, str);
+  int i;
+  for (i = 0; i < len; i++)
+  {
+    result[i] = tolower(result[i]);
+  }
+  return result;
+}
+
 #endif

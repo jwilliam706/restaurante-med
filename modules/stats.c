@@ -76,7 +76,7 @@ void getFavoriteDish(bill_list *list, dish *dishes){
       }
     }
     
-    printf("el plato favorito es %s\n",dishes[favorite_dish_position].name);
+    printf("El plato favorito es: %s\n",dishes[favorite_dish_position].name);
   }
   else
   {
@@ -136,7 +136,7 @@ void getMostConsumedDish(bill_list *list, dish *dishes){
         }
       }
     }
-    printf("el plato mas consumido es %s\n",dishes[favorite_dish_position].name);
+    printf("El plato mas consumido es: %s\n",dishes[favorite_dish_position].name);
   }
   else
   {
@@ -198,7 +198,7 @@ void getDishMoreMoneyMakes(bill_list *list, dish *dishes){
       }
     }
 
-    printf("el plato que mas dinero genera es %s\n",dishes[favorite_dish_position].name);
+    printf("El plato que mas dinero genera es: %s\n",dishes[favorite_dish_position].name);
   }
   else
   {
@@ -229,12 +229,10 @@ void getAveragePerCustomer(bill_list *list){
         billCustomer = billCustomer->next;
       }
       average = totalSum/counter;
-      printf("\nTotal %f", totalSum);
-      printf("\nCounter %d", counter);
-      printf("\nEl promedio de consumo del cliente con ID '%d' es: '%f'", id,average);
+      printf("\nEl promedio de consumo del cliente %s con ID: %d es: $%'.2f\n",idcustomer->name, id, average);
       }
       else{
-        printf("ID no encotrado.");
+        printf("ID no encontrado.");
       }
       
       
@@ -292,7 +290,7 @@ void getDishLessMoneyMakes(bill_list *list, dish *dishes){
         }
       }
     }
-    printf("el plato mas consumido es %s\n",dishes[favorite_dish_position].name);
+    printf("El plato que menos dinero genera es: %s\n",dishes[favorite_dish_position].name);
   }
   else
   {
