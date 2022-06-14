@@ -149,7 +149,7 @@ void getMostConsumedDish(bill_list *list, dish *dishes){
 void getDishMoreMoneyMakes(bill_list *list, dish *dishes){
   //- Local Variables
   int favorite_dish_position    = 0;
-  float moneyGeneratedByDish[]  = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+  float moneyGeneratedByDish[]  = {0.0,0.0,0.0,0.0,0.0,0.0,0.0};
   float bigger                  = 0;
 
   //- Bill list head
@@ -179,7 +179,6 @@ void getDishMoreMoneyMakes(bill_list *list, dish *dishes){
         else if(currentDetail->value->dish_id == dishes[4].id){ moneyGeneratedByDish[4] += currentDetail->value->quantity * currentDetail->value->price; }
         else if(currentDetail->value->dish_id == dishes[5].id){ moneyGeneratedByDish[5] += currentDetail->value->quantity * currentDetail->value->price; }
         else if(currentDetail->value->dish_id == dishes[6].id){ moneyGeneratedByDish[6] += currentDetail->value->quantity * currentDetail->value->price; }
-        else if(currentDetail->value->dish_id == dishes[7].id){ moneyGeneratedByDish[7] += currentDetail->value->quantity * currentDetail->value->price; }
         
         currentDetail = currentDetail->next;
       }
@@ -242,7 +241,7 @@ void getAveragePerCustomer(bill_list *list){
 void getDishLessMoneyMakes(bill_list *list, dish *dishes){
   //- Local Variables
   int favorite_dish_position  = 0;
-  int moneyGeneratedByDish[]  = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+  int moneyGeneratedByDish[]  = {0.0,0.0,0.0,0.0,0.0,0.0,0.0};
   double minor                = 0;
 
   //- Bill list head
@@ -272,7 +271,6 @@ void getDishLessMoneyMakes(bill_list *list, dish *dishes){
         else if(currentDetail->value->dish_id == dishes[4].id){ moneyGeneratedByDish[4] += currentDetail->value->quantity * currentDetail->value->price; }
         else if(currentDetail->value->dish_id == dishes[5].id){ moneyGeneratedByDish[5] += currentDetail->value->quantity * currentDetail->value->price; }
         else if(currentDetail->value->dish_id == dishes[6].id){ moneyGeneratedByDish[6] += currentDetail->value->quantity * currentDetail->value->price; }
-        else if(currentDetail->value->dish_id == dishes[7].id){ moneyGeneratedByDish[7] += currentDetail->value->quantity * currentDetail->value->price; }
         
         currentDetail = currentDetail->next;
       }
