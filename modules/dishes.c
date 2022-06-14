@@ -57,7 +57,7 @@ void readDishes()
   {
     dish *d = &dishes[i];
     int id = d->id;
-    if (d != NULL)
+    if (id != NULL)
     {
       lastId = d->id;
       savedDishes += 1;
@@ -69,7 +69,8 @@ void readDishes()
   for (int i = 0; i < 7; i++)
   {
     dish *d = &dishes[i];
-    if (d == NULL)
+    int id = d->id;
+    if (id == 0)
     {
       lastId += 1;
       savedDishes += 1;
@@ -126,7 +127,6 @@ void loadDishes()
     dishes[i] = d;
     i++;
   }
-
   sqlite3_finalize(stmt);
 }
 
