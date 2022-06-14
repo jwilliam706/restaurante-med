@@ -7,7 +7,7 @@
 #include "../lib/constants.h"
 #include "../database/sqlite3.h"
 
-void saveCustomer(customer *newCustomer)
+int saveCustomer(customer *newCustomer)
 {
   sqlite3 *db;
   char *error = 0;
@@ -34,6 +34,8 @@ void saveCustomer(customer *newCustomer)
   {
     printf("\n>>DATOS ALMACENADOS CORRECTAMENTE<<");
   }
+  int id = sqlite3_last_insert_rowid(db);
+  return id;
 }
 
 customer *createNewCustomer()
@@ -41,7 +43,6 @@ customer *createNewCustomer()
   system("cls");
   customer *newCustomer = malloc(sizeof(customer));
   printf("Ingreso de nuevo cliente\n");
-  newCustomer->id = 0;
   printf("Nombre: ");
   scanf(" %[^\n]", &newCustomer->name);
   printf("Telefono: ");
@@ -50,47 +51,12 @@ customer *createNewCustomer()
   scanf(" %[^\n]", &newCustomer->email);
   printf("Direccion: ");
   scanf(" %[^\n]", &newCustomer->address);
-  saveCustomer(newCustomer);
+  int id = saveCustomer(newCustomer);
+  newCustomer->id = id;
   return newCustomer;
 }
-
-// Copy customer?
-customer *createCustomer(customer *from)
-{
-  customer *newCustomer = malloc(sizeof(customer));
-  newCustomer->id = from->id;
-  strcpy(newCustomer->name, from->name);
-  strcpy(newCustomer->email, from->email);
-  strcpy(newCustomer->phone, from->phone);
-  strcpy(newCustomer->address, from->address);
-  return newCustomer;
-}
-
-
 
 //-- SEARCH FUNCTIONS SECTION
-//--
-void print_custormers_by_name_search(customer_list *list){
-  //- Customer list head
-  customer_node *current = list->head;
-  
-  //- Customer empty validation
-  if (current != NULL)
-  {
-    //- Customer List While
-    while (current != NULL)
-    {
-      printf("\n-----------------------------------------------------------------------");
-      printf("\nID: %d",current->value->id);
-      printf("\nNombre: %s",current->value->name);
-      printf("\nEmail: %s",current->value->email);
-      printf("\nDireccion: %s",current->value->address);
-      printf("\nTelefono: %s",current->value->phone);
-      current = current->next;
-    }
-    printf("\n-----------------------------------------------------------------------\n");
-  }
-}
 
 //- 
 customer *get_customer_by_id(customer_list *list, int id, char error_message[]){
@@ -118,16 +84,19 @@ customer *search_customers_by_name(){
   int id;
   customer_node *current = customers->head;
   customer_list *foundResults = malloc(sizeof(customer_list));
+  foundResults->size = 0;
   printf("Digite el nombre del cliente a buscar: ");
   readString(name, 50);
 
+  char *inputName = lowerCaseString(name);
   //- Customers List search
   while (current != NULL)
   {
-    if (strcmp(current->value->name, name) == 0)
+    char *customerName = lowerCaseString(current->value->name);
+    if (strstr(customerName, inputName) != NULL)
     {
       //- New Costumer
-      customer *newCustomer = createCustomer(current->value);
+      customer *newCustomer = current->value;
 
       //- Add Section
       customer_node *newNode = malloc(sizeof(customer_node));
@@ -149,17 +118,25 @@ customer *search_customers_by_name(){
     current = current->next;
   }
 
-  //-
+  if (foundResults->size == 0)
+  {
+    clear_console_and_change_color(ERROR_COLOR);
+    printf("No se encontraron resultados");
+    system("pause");
+    clear_console_and_change_color(BASE_COLOR);
+    return NULL;
+  } else if (foundResults->size == 1)
+  {
+    return foundResults->head->value;
+  } else
+  {
   printf("Se encontraron %d resultados.\n",foundResults->size);
-
-  //-
-  print_custormers_by_name_search(foundResults);
-  //-
+  printCustomers(foundResults);
   printf("\nDigite el id de cliente a utilizar:");
   scanf("%d", &id);
   getchar();
-  //-
   return  get_customer_by_id(foundResults,id,"Hubo un error!");
+  }
 }
 
 //--
@@ -269,8 +246,8 @@ customer *getCustomer()
 
 void printCustomer(customer *customer)
 {
-  printf("\n---DATOS DE CLIENTE----\n");
-  printf("\nCodigo %d", customer->id);
+  printf("\n-----------------------------------------------------------------------");
+  printf("\nID %d", customer->id);
   printf("\nNombre %s", customer->name);
   printf("\nDireccion %s", customer->address);
   printf("\nEmail %s", customer->email);
