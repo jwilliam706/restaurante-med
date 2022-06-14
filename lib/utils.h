@@ -8,6 +8,10 @@
 #include <time.h>
 #include <windows.h>
 
+
+char ERROR_COLOR[100] = "color 4f";
+char BASE_COLOR[100]  = "color 0f";
+
 void clearBuffer(char *line)
 {
   if (strchr(line, '\n') == NULL)
@@ -58,6 +62,12 @@ char *getLocaleCurrentTimeFor(time_t *rawTime)
   struct tm *timeinfo;
   timeinfo = localtime(rawTime);
   return asctime(timeinfo);
+}
+
+
+void clear_console_and_change_color(char color_config[]){
+  system("cls");
+  system(color_config);
 }
 
 int timeOffset()
