@@ -113,6 +113,8 @@ customer *search_customers_by_name(){
   int id;
   customer_node *current = customers->head;
   customer_list *foundResults = malloc(sizeof(customer_list));
+  foundResults->head = NULL;
+  foundResults->tail = NULL;
   foundResults->size = 0;
   printf("Digite el nombre del cliente a buscar: ");
   readString(name, 50);
