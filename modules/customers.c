@@ -56,6 +56,35 @@ customer *createNewCustomer()
   return newCustomer;
 }
 
+void printCustomer(customer *customer)
+{
+  printf("\n-----------------------------------------------------------------------");
+  printf("\nID %d", customer->id);
+  printf("\nNombre %s", customer->name);
+  printf("\nDireccion %s", customer->address);
+  printf("\nEmail %s", customer->email);
+  printf("\nTelefono %s\n\n", customer->phone);
+}
+
+void printCustomers(customer_list *list)
+{
+  customer_node *current = list->head;
+  if (current != NULL)
+  {
+    printf("---Lista de clientes---\n");
+    while (current != NULL)
+    {
+      printCustomer(current->value);
+      current = current->next;
+    }
+  }
+  else
+  {
+    printf("Lista de clientes vacia...\n");
+  }
+  system("pause");
+}
+
 //-- SEARCH FUNCTIONS SECTION
 
 //- 
@@ -242,35 +271,6 @@ customer *getCustomer()
     }
   }
   return NULL;
-}
-
-void printCustomer(customer *customer)
-{
-  printf("\n-----------------------------------------------------------------------");
-  printf("\nID %d", customer->id);
-  printf("\nNombre %s", customer->name);
-  printf("\nDireccion %s", customer->address);
-  printf("\nEmail %s", customer->email);
-  printf("\nTelefono %s\n\n", customer->phone);
-}
-
-void printCustomers(customer_list *list)
-{
-  customer_node *current = list->head;
-  if (current != NULL)
-  {
-    printf("---Lista de clientes---\n");
-    while (current != NULL)
-    {
-      printCustomer(current->value);
-      current = current->next;
-    }
-  }
-  else
-  {
-    printf("Lista de clientes vacia...\n");
-  }
-  system("pause");
 }
 
 void loadCustomers()
