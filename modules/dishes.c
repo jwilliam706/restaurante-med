@@ -56,8 +56,8 @@ void readDishes()
   for (int i = 0; i < 7; i++)
   {
     dish *d = &dishes[i];
-    int *id = d->id;
-    if (id != NULL)
+    int id = d->id;
+    if (d != NULL)
     {
       lastId = d->id;
       savedDishes += 1;
@@ -69,7 +69,7 @@ void readDishes()
   for (int i = 0; i < 7; i++)
   {
     dish *d = &dishes[i];
-    if (d->id == NULL)
+    if (d == NULL)
     {
       lastId += 1;
       savedDishes += 1;
