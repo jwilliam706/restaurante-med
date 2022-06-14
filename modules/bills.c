@@ -39,11 +39,9 @@ void saveBillDetails(int bill_id, bill_detail_list *details)
     }
     int id = sqlite3_last_insert_rowid(db);
     detail->id = id;
-    printf("last insert rowid: %d\n", id);
     successCount++;
     current = current->next;
   }
-  printf("Registros insertados en factura %d! %d\n", bill_id, successCount);
 }
 
 int saveBill(bill *newBill)
@@ -72,7 +70,6 @@ int saveBill(bill *newBill)
   int id = sqlite3_last_insert_rowid(db);
   newBill->id = id;
   saveBillDetails(id, newBill->details);
-  printf("Registro insertado! bill id: %d\n", id);
 
   return id;
 }
@@ -162,7 +159,7 @@ float calculateBillTotal(bill *bill)
 
 void printBill(bill *bill)
 {
-  printf("---------------------------------------Factura----------------------------------------\n");
+  printf("---------------------------------------Factura %d-------------------------------------\n", bill->number);
   printf("\nFecha de factura: %s\n", getLocaleCurrentTimeFor(&(bill->date)));
   printf("\nPlatillo\tCantidad\tPrecio Unitario\t\tPrecio total");
   printf("\n-------------------------------------------------------------------------------------\n");
@@ -177,10 +174,10 @@ void printBill(bill *bill)
     current = current->next;
   }
 
-  printf("-------------------------------------------------------------------------------------\n");
-  printf("\nSubtotal: ------------------------------------------------------------$%'.2f\n\n", bill->subtotal);
-  printf("\nIVA: ------------------------------------------------------------$%'.2f\n\n", bill->iva);
-  printf("\nTotal a pagar: ------------------------------------------------------------$%'.2f\n\n", bill->total);
+  printf("-------------------------------------------------------------------------------------\n\n");
+  printf("\nSubtotal: ----------------------------------------------------------------  $%8.2f\n", bill->subtotal);
+  printf("\nIVA: ---------------------------------------------------------------------  $%8.2f\n", bill->iva);
+  printf("\nTotal a pagar: -----------------------------------------------------------  $%8.2f\n\n\n", bill->total);
 }
 
 void printBills(bill_list *list)
