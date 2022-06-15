@@ -35,6 +35,7 @@ int saveCustomer(customer *newCustomer)
     printf("\n>>DATOS ALMACENADOS CORRECTAMENTE<<");
   }
   int id = sqlite3_last_insert_rowid(db);
+  addCustomer(customers, newCustomer);
   return id;
 }
 
@@ -87,8 +88,9 @@ void printCustomers(customer_list *list)
 
 //-- SEARCH FUNCTIONS SECTION
 
-//- 
-customer *get_customer_by_id(customer_list *list, int id, char error_message[]){
+//-
+customer *get_customer_by_id(customer_list *list, int id, char error_message[])
+{
   customer_node *current = list->head;
   while (current != NULL)
   {
@@ -98,7 +100,7 @@ customer *get_customer_by_id(customer_list *list, int id, char error_message[]){
     }
     current = current->next;
   }
-  
+
   clear_console_and_change_color(ERROR_COLOR);
   printf(error_message);
   system("pause");
@@ -107,7 +109,8 @@ customer *get_customer_by_id(customer_list *list, int id, char error_message[]){
 }
 
 //--
-customer *search_customers_by_name(){
+customer *search_customers_by_name()
+{
   system("cls");
   char name[50];
   int id;
@@ -156,17 +159,19 @@ customer *search_customers_by_name(){
     system("pause");
     clear_console_and_change_color(BASE_COLOR);
     return NULL;
-  } else if (foundResults->size == 1)
+  }
+  else if (foundResults->size == 1)
   {
     return foundResults->head->value;
-  } else
+  }
+  else
   {
-  printf("Se encontraron %d resultados.\n",foundResults->size);
-  printCustomers(foundResults);
-  printf("\nDigite el id de cliente a utilizar:");
-  scanf("%d", &id);
-  getchar();
-  return  get_customer_by_id(foundResults,id,"Hubo un error!");
+    printf("Se encontraron %d resultados.\n", foundResults->size);
+    printCustomers(foundResults);
+    printf("\nDigite el id de cliente a utilizar:");
+    scanf("%d", &id);
+    getchar();
+    return get_customer_by_id(foundResults, id, "Hubo un error!");
   }
 }
 
@@ -177,7 +182,7 @@ customer *search_customer_by_id()
   printf("Digite el codigo de cliente a buscar: ");
   scanf("%d", &id);
   getchar();
-  return get_customer_by_id(customers,id,"Cliente no encontrado");
+  return get_customer_by_id(customers, id, "Cliente no encontrado");
 }
 
 //--
@@ -189,10 +194,10 @@ customer *searchCustomer()
   int option;
   customer *customer;
   system("cls");
-  
+
   if (customers->head == NULL)
   {
-    
+
     clear_console_and_change_color(ERROR_COLOR);
     printf("\nLa lista esta vacia\n");
     system("pause");
